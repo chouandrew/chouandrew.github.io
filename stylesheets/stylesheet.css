@@ -269,6 +269,10 @@ Full-Width Styles
   margin: 0 auto;
 }
 
+.poems{
+font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif;
+}
+
 #forkme_banner {
   display: block;
   position: absolute;
