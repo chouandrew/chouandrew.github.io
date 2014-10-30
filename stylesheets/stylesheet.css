@@ -309,13 +309,7 @@ font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif;
   text-shadow: #111 0px 0px 10px;
 }
 
-#project_tagline {
-  color: #fff;
-  font-size: 24px;
-  font-weight: 300;
-  background: none;
-  text-shadow: #111 0px 0px 10px;
-}
+
 
 #downloads {
   position: absolute;
@@ -386,12 +380,12 @@ Small Device Styles
   }
 
   .inner {
-    min-width: 320px;
+    min-width: 160px;
     max-width: 480px;
   }
 
   #project_title {
-  font-size: 32px;
+  font-size: 20px;
   }
 
   h1 {
