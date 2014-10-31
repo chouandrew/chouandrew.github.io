@@ -1,12 +1,12 @@
 ﻿<!DOCTYPE html>
 <html>
-<head>
+<head> 
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="description" content="chouandrew.github.io : ">
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+    <link rel="icon" type="image/png" href="images/myicon.ico">
     <!-- SMOOTH SCROLL -->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="javascripts/jquery.min.js"></script>
 <script>
 $(function() {
   $('a[href*=#]:not([href=#])').click(function() {
@@ -26,17 +26,47 @@ $(function() {
 <!-- End of SMOOTH SCROLL -->
 <style>
     
-a:link {color: white;}
-a:visited {color: #ffcc00;}
-a:link{text-decoration:none;} 
+::selection {
+    background:#ff8a8a; 
+    color:#ffffff;
+}
 
-html, body {height: 100%;}
+::-moz-selection {
+    background:#ff8a8a; 
+    color:#ffffff;
+}
+
+::-webkit-selection {
+    background:#ff8a8a; 
+    color:#ffffff;
+}
+
+a:link {color: white;}
+a:visited {color: white;}
+a:link{text-decoration:none;} 
+a:hover {color: #ff6666;}
+a:active {color: #ff6666;}
+a {text-decoration: none !important;}
+
+html, body {height: 100%; background-color: #373737;}
+
+p {line-height:200%}
+
+.poems { 
+font-size: 1em;
+font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif;
+color: white;
+text-align: left;
+width: 60%;
+margin: 0 auto;
+}
 
 #in_cover { 
 width: 100%;
 height: 100%;
+font-family: Helvetica;
 text-align: center;
-color: #ffcc00;
+color: #ff6666;
 display: flex;
 justify-content: center; /* align horizontal */
 align-items: center; /* align vertical */
@@ -45,10 +75,12 @@ align-items: center; /* align vertical */
 #out_cover { 
 width: 100%;
 height: 100%;
-color: #ffcc00;
+color: #ff6666;
 width: 60%;
 margin-left: auto;
 margin-right: auto;
+font-family: Helvetica;
+font-size: 14px;
 }
 
 #index {
@@ -56,50 +88,44 @@ margin-left: 50px;
 margin-bottom: 100px;
 }
 
-.split {width: 100%; height: 2px; background-color: #ffcc00; margin-top: 100px; margin-bottom: 50px;}
-.split1 {width: 100%; height: 2px; background-color: #ffcc00; margin-bottom: 100px;}
-.split2 {width: 100%; height: 2px; background-color: #ffcc00; margin-top: 100px; margin-bottom: 200px;}
-
-
- .poems {
-color: white;
-text-align: left;
-width: 50%;
-margin: 0 auto;
-}
+.split {width: 100%; height: 2px; background-color: #ff6666; margin-top: 100px; margin-bottom: 50px;}
+.split1 {width: 100%; height: 2px; background-color: #ff6666; margin-bottom: 100px;}
+.split2 {width: 100%; height: 2px; background-color: #ff6666; margin-top: 100px; margin-bottom: 200px;}
 
 h2 {
 color: white;
 text-align: left;
 background: none;
+font-size: 1.5em;
+font-family: Helvetica;
 }
 
 </style>
-    <title>Andrew's Poems</title>
+    <title>Andrew's Poems</title> 
 </head>
 
 
 <body>
 
 <div id="in_cover" > 
-as a gift to        Xxxx,
+as a gift to &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Siran,<br>
 all my inspirations come from her….
 </div>
 <div class="split1"></div>
 <div id="index">
-<h1><font color="#ffcc00" face="Century Gothic, sans-serif">
-Historia de un Amor</font></h1>
+<p><font color="#ff6666" face="Century Gothic, sans-serif" size="50">
+Historia de un Amor</font></p><br><br><br>
 <h2><br>
-<a href="#1">I Wonder</a><br>
-<a href="#2">She Fancies You</a><br>
-<a href="#3">Two Days to See You</a><br>
-<a href="#4">Icelady</a><br>
-<a href="#5">Sestina: Turn to Religion</a><br>
-<a href="#6">Falling</a><br>
-<a href="#7">El Amor y La Muerte</a><br>
-<a href="#8">Cutie</a><br>
-<a href="#9">Madness/Delusion</a><br>
-<a href="#10">Take Me to the Moon</a><br>
+<a href="#1">I Wonder</a><br><br>
+<a href="#2">She Fancies You</a><br><br>
+<a href="#3">Two Days to See You</a><br><br>
+<a href="#4">Icelady</a><br><br>
+<a href="#5">Sestina: Turn to Religion</a><br><br>
+<a href="#6">Falling</a><br><br>
+<a href="#7">El Amor y La Muerte</a><br><br>
+<a href="#8">Cutie</a><br><br>
+<a href="#9">Madness/Delusion</a><br><br>
+<a href="#10">Take Me to the Moon</a><br><br>
 <a href="#11">El Fin</a><br>
 </h2>
 </div>
