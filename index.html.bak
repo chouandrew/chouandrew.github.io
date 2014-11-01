@@ -26,15 +26,11 @@
                 width: 40px !important;
                 }
             #googletable {width: 20em !important;}
-          
+            #myavatar { 
+         	    width:200px; 
+              border-radius: 110px;
              }
-        @media screen and (min-width: 490px){
-        	#myavatar { 
-        		  width:120px;  
-              border-radius: 70px;
              }
-        	
-        	}
     -->
 
 </style>
