@@ -150,7 +150,7 @@ onFocus="if(this.value==this.defaultValue)this.value=''; this.style.color='black
     <!-- FOOTER  -->
     <div id="footer_wrap" class="outer">
       <footer class="inner">
-        <a href="index.html" class="myButton">英语</a>
+        <a href="index.html" class="myButton">English</a>
       </footer>
     </div>
 

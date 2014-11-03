@@ -120,9 +120,9 @@ a:link{text-decoration:none;}
   <img src="images/google.png" width=50% height=50% > 	</img>
 <form method="get" action="http://www.google.com/search">
 <div id="googletable" style="width:30em; border: none;">
-  <table border="0"  width="480" height="115" align="center" >
+  <table border="0"  width="500" height="115" align="center" >
     <tr>
-      <td  border="0"width="400" height="115"><input type="text"   name="q" size="45" style="color:#808080;"
+      <td  border="0" width="400" height="115"><input type="text"   name="q" size="45" style="color:#808080;"
 maxlength="255" value="Google Search"
 onFocus="if(this.value==this.defaultValue)this.value=''; this.style.color='black';" onBlur="if(this.value=='')this.value=this.defaultValue; "/>
         <input type="submit" value="Google Yixia" />
@@ -151,7 +151,7 @@ onFocus="if(this.value==this.defaultValue)this.value=''; this.style.color='black
     <!-- FOOTER  -->
     <div id="footer_wrap" class="outer">
       <footer class="inner">
-       <a href="index_zh.html" class="myButton">Chinese</a>
+       <a href="index_zh.html" class="myButton">中文</a>
       </footer>
     </div>
 
