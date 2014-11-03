@@ -115,5 +115,6 @@ button{
 
 <button class="ripple">Login</button>
 <button class="ripple" data-ripple-color="#89669b" style="background:white; color:black;">Login</button>
+<img class="ripple" src="images/leo.jpg"></img>
 </body>
 </html>

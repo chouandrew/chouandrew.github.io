@@ -22,28 +22,6 @@ $(function() {
     }
   });
 });
-
-$(function(){
-	var ink, d, x, y;
-	$(".ripplelink").click(function(e){
-    if($(this).find(".ink").length === 0){
-        $(this).prepend("<span class='ink'></span>");
-    }
-         
-    ink = $(this).find(".ink");
-    ink.removeClass("animate");
-     
-    if(!ink.height() && !ink.width()){
-        d = Math.max($(this).outerWidth(), $(this).outerHeight());
-        ink.css({height: d, width: d});
-    }
-     
-  x = e.pageX - $(this).offset().left - ink.width()/2;
- y = e.pageY - $(this).offset().top - ink.height()/2;
-     
-   ink.css({top: y+'px', left: x+'px'}).addClass("animate");
-});
-});
 </script>
 <!-- End of SMOOTH SCROLL -->
 
@@ -59,7 +37,11 @@ $(function(){
              #out_cover { width: 90% !important; }
              }
     -->
+    </style>
 
+
+
+<style>
     
 ::selection {
     background:#ff8a8a; 
@@ -96,6 +78,16 @@ width: 60%;
 margin: 0 auto;
 }
 
+#in_cover { 
+width: 100%;
+height: 100%;
+font-family: Helvetica;
+text-align: center;
+color: #ff6666;
+display: flex;
+justify-content: center; /* align horizontal */
+align-items: center; /* align vertical */
+}
 
 #out_cover { 
 width: 60%;
@@ -125,76 +117,6 @@ font-family: Helvetica;
 }
 
 #paint {width: 100%;}
-/********************************ripple********************************/
-.wrapper {
-	display: block;
-  width:100%;
-  margin:0px;
-height: 100%;
-font-family: Helvetica;
-text-align: center;
-color: #ff6666;
-display: flex;
-justify-content: center; /* align horizontal */
-align-items: center; /* align vertical */
-}
-
-.wrapper:after {
-	content:"";
-	display:table;
-	clear:both;
-}
-
-.ripplelink{
-  display:block;
-  width:100%;
-  height:50em;
-  color:#ff6666;
-  position:relative;
-  -webkit-transition: all 0.2s ease;
-  -moz-transition: all 0.2s ease;
-  -o-transition: all 0.2s ease;
-  transition: all 0.2s ease;
-  z-index:0;
-}
-
-.ink {
-  display: block;
-  position: absolute;
-  background: #ff6666;
-  border-radius: 100%;
-  -webkit-transform:scale(0);
-     -moz-transform:scale(0);
-       -o-transform:scale(0);
-          transform:scale(0);
-}
-
-.animate {
-	-webkit-animation:ripple 0.70s linear;
-   -moz-animation:ripple 0.70s linear;
-    -ms-animation:ripple 0.70s linear;
-     -o-animation:ripple 0.70s linear;
-        animation:ripple 0.70s linear;
-}
-
-@-webkit-keyframes ripple {
-    100% {opacity: 0; -webkit-transform: scale(2.5);}
-}
-@-moz-keyframes ripple {
-    100% {opacity: 0; -moz-transform: scale(2.5);}
-}
-@-o-keyframes ripple {
-    100% {opacity: 0; -o-transform: scale(2.5);}
-}
-@keyframes ripple {
-    100% {opacity: 0; transform: scale(2.5);}
-}
-
-
-.pink{
-  background:#373737;
-}
-/********************************ripple********************************/
 
 </style>
     <title>Andrew's Poems</title> 
@@ -202,9 +124,11 @@ align-items: center; /* align vertical */
 
 
 <body>
-<div class="wrapper"><a class="ripplelink pink">
+<div class="wrapper">
+<div id="in_cover" > 
 as a gift to &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Siran,<br>
-all my inspirations come from her….</a></div>
+all my inspirations come from her….
+</div>
 <div class="split1"></div>
 <div id="index">
 <p><font color="#ff6666" face="Century Gothic, sans-serif" size="50">
@@ -589,7 +513,7 @@ Those poems are from my diaries, eleven days, eleven poems, so they also tell th
 <p style="text-align: center; color: white;">
 &copy; Powered by GitHub.&nbsp Art by Siran. &nbsp<font face="YouYuan">抽安猪</font> No Copyright&nbsp&nbsp
 </p>
-</div>
+</div></div>
 </body>
 </html>
 
