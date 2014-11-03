@@ -25,7 +25,6 @@ function GetIEVersion() {
 
 if (GetIEVersion() > 0)
    window.location.replace("killie.html");
-   
 </script>
     
    <style>
@@ -59,7 +58,7 @@ if (GetIEVersion() > 0)
         	
         	}
     -->
-a:link{text-decoration:none;} 
+    a:link{text-decoration:none;} 
 .myButton {
 	-moz-box-shadow:inset 0px 0px 0px 0px #84baf0;
 	-webkit-box-shadow:inset 0px 0px 0px 0px #84baf0;
@@ -112,7 +111,7 @@ a:link{text-decoration:none;}
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
         <h4>
-        Hooray! Seems you've found my Homepage.
+        啊哈！ 给您撞上了我的主页
         </h4>
         <br><br><br><br><br>
      <div id="google" align="middle">
@@ -123,9 +122,9 @@ a:link{text-decoration:none;}
   <table border="0"  width="480" height="115" align="center" >
     <tr>
       <td  border="0"width="400" height="115"><input type="text"   name="q" size="45" style="color:#808080;"
-maxlength="255" value="Google Search"
+maxlength="255" value="Guge Sousuo"
 onFocus="if(this.value==this.defaultValue)this.value=''; this.style.color='black';" onBlur="if(this.value=='')this.value=this.defaultValue; "/>
-        <input type="submit" value="Google Yixia" />
+        <input type="submit" value="谷歌一下" />
         <input type="hidden" name="google search" value="google.com" /></td>
     </tr>
   </table>
@@ -137,7 +136,7 @@ onFocus="if(this.value==this.defaultValue)this.value=''; this.style.color='black
       <br><br><br>
    <div align="middle">
        <h4>
-       	But there's nothing here. You can connect me on </h4> <br>
+       	如您所见，这里什么都没有。</font></h4> <br>
       <a href="https://plus.google.com/+AndrewChouFromGoogle/posts"><img src="images/gplus.png" class="social"></img></a>
       <a href="http://chouandrew.tumblr.com/"><img src="images/tumblr.png" class="social"></img></a>
       <a href="https://twitter.com/chouandres"><img src="images/twitter.png" class="social"></img></a>
@@ -151,7 +150,7 @@ onFocus="if(this.value==this.defaultValue)this.value=''; this.style.color='black
     <!-- FOOTER  -->
     <div id="footer_wrap" class="outer">
       <footer class="inner">
-       <a href="index_zh.html" class="myButton">Chinese</a>
+        <a href="index.html" class="myButton">英语</a>
       </footer>
     </div>
 
@@ -159,7 +158,6 @@ onFocus="if(this.value==this.defaultValue)this.value=''; this.style.color='black
 
   </body>
 </html>
-
 
 
 
