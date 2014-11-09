@@ -88,7 +88,7 @@ font-family: Helvetica;
 text-align: center;
 color: #ff6666;
 display: fixed;
-margin-top: 580px;
+margin-top: 500px;
 }
 
 #out_cover { 
