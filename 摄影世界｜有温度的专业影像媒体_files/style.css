@@ -1,0 +1,479 @@
+/*
+* Theme Name: Photoworld Magazine
+* Author: Brick
+* Description: Photoworld Magazine by Brick
+* Version: 4.1
+*/
+
+/*
+* 0-初始化
+* 1-样式库扩展
+* 2-公用样式
+*/
+
+/* 初始化 */
+body, h1, h2, h3, p, form
+{
+	margin:0;
+}
+ul,ol {
+	margin: 0;
+	padding: 0;
+	text-decoration: none;
+	list-style-type: none;;
+}
+a {
+	text-decoration: none;
+	color: inherit;
+}
+input[type="button"],
+input[type="submit"], 
+input[type="reset"], 
+input[type="file"]::-webkit-file-upload-button, 
+button {
+	/*padding: 0;*/
+	border: none;
+	font-size: 14px;
+}
+textarea{resize:none;}
+
+
+/* 1-样式库扩展 */
+.h30{height: 30px;}
+.h40{height: 40px;}
+.h35{height: 35px;}
+.h48{height: 48px;}
+.h62{height: 62px;}
+.h96{height: 96px;}
+.h100{height: 100px;}
+.h360{height: 360px;}
+.w120{width: 120px;}
+.w290{width: 290px;}
+
+.pct67{width: 67.040816%;}
+.lh2-5{line-height: 2.5em;}
+.lh34{line-height: 34px;}
+.lh40{line-height:40px;}
+.lh50{line-height: 50px;}
+
+.m4{margin:4px;}
+.ml4{margin-left:4px;}
+.ml-4{margin-left:-4px;}
+.mt4{margin-top:4px;}
+.mr4{margin-right:4px;}
+.mb4{margin-bottom:4px;}
+.mt40{margin-top: 40px;}
+.mb40{margin-bottom: 40px;}
+.ml40{margin-left: 40px;}
+.mr40{margin-right: 40px;}
+.mt50{margin-top: 50px;}
+.mb50{margin-bottom: 50px;}
+.ml50{margin-left: 50px;}
+.mr50{margin-right: 50px;}
+.mr-40{margin-right: -40px;}
+
+.bb6{border: 1px solid #b6b6b6;}
+.btb6{border-top: 1px solid #b6b6b6;}
+.bbb6{border-bottom: 1px solid #b6b6b6;}
+
+.bb0{border-bottom:1px solid #000;}
+.bt0{border-top:1px solid #000;}
+
+.f42{font-size:42px;}
+
+/* 2-公用样式 */
+h1,h2,h3,p,form,ol,ul,li {
+	line-height: 175%;
+	font-family: "Helvetica Neue", "Arial", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑",sans-serif;
+	font-weight: normal;
+}
+h1 {font-size: 24px;}
+h2 {font-size: 20px;margin-bottom: 0.3rem;}
+h3 {font-size: 16px;}
+del {text-decoration: line-through;}
+ins {text-decoration: underline;}
+.dark-red{color: #d62222;}
+.light-grey{color: #b6b6b6;}
+.full-width{width: 980px;}
+.primary-width{width: 640px;}
+.sidebar-width{width: 300px;}
+.light-frame {
+	border: 1px solid rgb(220,220,220); 
+	background-color: rgb(248,248,248); 
+}
+.float-window {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	margin: auto;
+	border: 1px solid #b6b6b6;
+	padding: 50px;
+	background-color: #fff;
+	width: 300px;
+	text-align: center;
+}
+.float-window-background {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;
+	background-color: rgba(0, 0, 0, 0.7);
+	z-index: 1000;
+}
+.input-text {
+	height: 26px;
+}
+.user-sign-form {
+	margin: 50px 90px;
+}
+.submit-sign-btn {
+	width: 150px;
+	margin: 50px auto;
+}
+.pre-tap {
+	margin-right: 30px;
+	background-color: #f04848;
+	color: white;
+	padding: 4px 6px;
+	font-size: 12px;
+	border-radius: 3px;
+}
+
+/*
+.wp-post-image {
+	width: 100%;
+	height: auto;
+}
+*/
+.thumbnail {
+	font-size: 0;
+	border: 1px solid #eee;
+	line-height: 0;
+}
+.excerpt,
+.meta {
+	color: #777;
+	font-size: 0.875rem;
+}
+.meta {
+	border-top: 1px solid #ccc;
+	line-height: 34px;
+}
+.comment-img {
+	display: inline-block;
+	vertical-align: middle;
+}
+.button {
+	display: inline-block;
+	border: 1px solid #b6b6b6;
+}
+.button-container a {
+	display: block;
+}
+.dark-btn,
+.dark-btn a {
+	color: #fff;
+	background-color: #666;
+}
+.page-numbers {
+	display: inline-block;
+	border: 1px solid #b6b6b6;
+	padding: 5px;
+	margin-right: 5px;
+}
+.menu-navigation-container {
+	border-bottom: 6px solid #000;
+}
+#menu-navigation {
+	width: 565px;
+	margin: 0 auto;
+}
+#menu-navigation {
+	overflow: auto;
+}
+#menu-navigation ul {
+	float:left;
+}
+#menu-navigation li {
+	float: left
+}
+.menu-navigation-container  ul#menu-navigation > li > a { /*主导航栏样式*/
+	display: block;
+	padding: 12px 40px;
+	font-size: 16px;
+	font-size: 1rem;
+	color: #000;
+}
+.menu-navigation-container  ul#menu-navigation li:hover > a, /*当前栏目反色*/
+.menu-navigation-container  ul#menu-navigation li.current-menu-item > a,
+.menu-navigation-container  ul#menu-navigation li.current-category-ancestor > a,
+.menu-navigation-container  ul#menu-navigation li.current-post-ancestor > a { 
+	background-color: black;
+	color: white;
+}
+#main {
+	margin: 30px 0 20px 0;
+}
+.slider-list {
+	display: none;
+	top: 0;
+	left: 0;
+}
+.left-slider-title{
+	margin-top: -8.6%;
+	margin-left: 4.6%;
+	text-shadow: 0px 0px 5px #000;
+}
+.small-slider-title {
+	margin-top: -4%;
+	margin-left: 1.5%;
+	text-shadow: 0px 0px 5px #000;
+}
+#primary {
+	width: 65.306122%;
+}
+.bottom-article {
+	width: 46.875%;
+}
+
+#install-app-btn {
+	width: 220px;
+	font-size: 18px;
+	padding: 2px;
+}
+#install-app-btn:hover {
+	opacity: 0.6;
+	cursor: pointer;
+}
+#magazine {
+	border-top: 1px dotted #b6b6b6;
+	border-bottom: 1px dotted #b6b6b6;
+	padding: 40px 0;
+	margin-bottom: 40px;
+}
+#magazine-title {
+	line-height: 46px;
+}
+#magazine > p {
+	color: #b6b6b6;
+	margin-bottom: 20px;
+}
+#magazine > div {
+	overflow: auto;
+}
+.side-title {
+	background-color: #eee;
+	color: #666;
+}
+.sidebar-ad {
+	margin: 40px auto;
+}
+#site-footer {
+	background-color: #333;
+	font-size: 14px;
+	font-size: 0.875rem;
+	color: #DFDFDF;
+}
+#footer-container {
+	padding: 40px 0;
+	line-height: 175%;
+}
+.footer-content {
+	width: 33.333333%;
+}
+#copyright {
+	text-align: right;
+}
+#footer-left-container {
+	width: 60%;
+}
+.cat-entry {
+	width: 44.411765%;
+	margin-right: 5.294118%;
+}
+
+/* 3-细节样式 */
+.sign-btn {
+	width: 60px;
+	height: 60px;
+	text-align: center;
+	line-height: 60px;
+}
+#sign-box {
+	width: 480px;
+	height: 350px;
+}
+.input-sign-full {
+	width: 286px;
+}
+.input-sign-half {
+	width: 156px;
+}
+#get-mobilecode-btn {
+	width: 110px;
+}
+
+
+/* single */
+#full-post a {
+	border-bottom: 1px dotted;
+}
+#full-post .post-content {
+	border-bottom: 1px solid #b6b6b6;
+	margin-bottom: 10px;
+}
+#full-post p,
+#full-post ul,
+#full-post ol,
+#full-post iframe,
+#full-post div {
+	margin-bottom: 1.2em;
+}
+#full-post h1 {
+	margin: 1em 0 0.555556em 0;
+}
+#full-post img {
+	display: block;
+	margin: 0 auto 1.2em auto;
+}
+#full-post .wp-caption img {
+	margin-bottom: 0px;
+}
+.post-meta p {
+	border-bottom: 1px solid #000;
+}
+.wp-caption {
+	margin-left: auto;
+	margin-right: auto;
+	color: #b6b6b6;
+}
+#full-post ul li {
+	list-style-type: disc;
+}
+#full-post ol li {
+	list-style-type: decimal;
+	margin-bottom: 0.5em;
+}
+#full-post ul,
+#full-post ol {
+	line-height: 175%;
+	list-style-position: inside;
+}
+#full-post ul ul,
+#full-post ol ol{
+	line-height: 175%;
+	list-style-position: inside;
+	padding-left: 1em;
+}
+blockquote {
+	background: #f9f9f9;
+	border-left: 10px solid #ccc;
+	margin: 1em 10px;
+	padding: 1em 10px .1em 20px;
+	font-family: Georgia, serif;
+}
+blockquote p {
+	margin-bottom: 0;
+}
+.mbx {
+	border-left: 6px solid #ccc;
+	padding: 0 0 0 6px;
+	line-height: 100%;
+	border: none;
+}
+#weixin-share-btn {
+	border: 1px solid #699a3f;
+	color: #699a3f;
+	padding: 2px 30px;
+	font-size: 14px;
+}
+#weixin-share-btn:hover {
+	opacity: 0.6;
+	border-color: rgba(105, 154, 63, 0.6);
+	cursor: pointer;
+}
+#weixin-share {
+	width: 256px;
+	height: 300px;
+	padding: 40px;
+	text-align: center;
+}
+#submit-btn {
+	padding: 6px 37px;
+	font-size: 14px;
+	cursor: pointer;
+	background-color: #fff;
+	position: relative;
+	left: 50%;
+	margin-left: -66px;
+}
+/* related post */
+.related-post {
+	margin-left: -8px;
+}
+.related-post-li {
+	width: 154px;
+	margin-left: 8px;
+	float: left;
+	margin-bottom: 30px;
+	height: 250px;
+}
+
+/* comment */
+#reply-title {
+	font-size: 18px;
+	height: 40px;
+	line-height: 40px;
+	border-bottom: 1px solid #b6b6b6;
+	margin-bottom: 20px;
+}
+#comment {
+	width: 546px;
+	border-color: #b6b6b6;
+	height: 100px;
+}
+.form-submit {
+	text-align: right;
+}
+#submit {
+	width: 150px;
+	height: 40px;
+	font-size: 16px;
+	line-height: 40px;
+	color: white;
+	padding: 0;
+	margin-bottom: 20px;
+}
+.children {
+	margin-left: 50px;
+}
+.comment-content {
+	padding-left: 88px;
+}
+.children .comment-content {
+	padding-left: 59px;
+}
+
+/* 分页导航 */
+#content .pagination{ /*分页导航边距*/
+	margin: 1.25rem 0 0 0.5rem;
+	text-align: center; 
+	text-shadow: none;  
+}
+#content .pagination .current { /*分页导航当前页样式*/
+	background-color: #f1f1f1;
+}
+#content .pagination  .page-numbers { /*分页导航数字样式*/
+	border:solid 1px #DEDEDE;
+	display: block;
+	float: left;	
+	margin-right:3px;
+	padding: 3px 8px;
+	position: relative;
+}
+#ds-thread {
+	margin: 60px 0 40px 0;
+}
