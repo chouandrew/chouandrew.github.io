@@ -1,0 +1,59 @@
+
+
+a:link{text-decoration:none;} 
+body {margin: 0; font-family: 'cengoth' sans-serif;}
+h1 {font-size: 3em;}
+#header   {width: 100%;
+           height: 5em;
+           background-color: #2ecc71;
+           position: fixed;}
+
+#container {position: absolute;
+            top: 1em; left: 8em;}
+
+#logo img {height: 3em; width: 3em;
+           border: 3px solid white;
+           border-radius: 2.1875em; 
+           vertical-align: middle;} 
+
+.menu-item {display: inline; }
+
+.menu-item a {text-decoration: none; color: white;}
+
+#introcontainer {height: 43.75em; 
+                 background-color: #2ecc71;
+                 color: white;}
+#hola {width: 50%; float: left;}
+#hola img {width: 100%; }
+.intro {padding-top: 12em;}
+
+#about {text-align: center; padding-top: 5em; padding-bottom: 5em;}
+section p {padding-top: 1.5em; padding-bottom: 4em;  
+           margin-left: 3em; margin-right: 3em; 
+           font-size: 1.8em; color: #C0C0C0;}
+.pic {display: inline-block; width: 30%; color: #C0C0C0;}
+
+
+#skill {height: 5em;}
+text {display: inline-block; height: 100%; padding-left: 3.5em;}
+#idiomas {background-color: #16a085; height: 10em; color: white;}
+#idiomas img { width: 10em; float: right; }
+#softwares {background-color: #f1c40f; height: 10em; color: white; }
+#softwares img {width: 7em; float: right; }
+#codes {background-color: #f39c12; color: white; height: 10em;}
+.column {font-size: 2em; float: right; }
+
+#worktitle{text-align: center; padding-bottom: 3em; padding-top: 5em;}
+#work {width: 66em; margin:auto;}
+.fancybox img {margin: 3em;}
+#option {margin-top: 3em;}
+.option {width: 49%; display: inline-block; 
+         text-align: center; background-color: #ecf0f1;}
+
+footer {background-color: #e67e22; 
+         height:30em;}
+footer h1 {padding-top: 4em; padding-left: 2em;}
+footer img {width:5em; padding: 0.5em; vertical-align: middle;}
+
+
+

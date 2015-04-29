@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>My Portfolio</title>
+<!-- Add CSS library -->
+<link rel="stylesheet" href="css/style.css" />
+<!-- Add jQuery library -->
+<script type="text/javascript" src="javascript/jquery.min.js"></script>
+<!-- Add fancyBox -->
+<link rel="stylesheet" href="fancybox/source/jquery.fancybox.css" type="text/css" media="screen" />
+<script type="text/javascript" src="fancybox/source/jquery.fancybox.pack.js"></script>
+<!-- fancybox effects -->
+<script>
+$(document).ready(function() {
+	$(".fancybox").fancybox({
+		openEffect	: 'elastic',
+		closeEffect	: 'elastic'
+	});
+});
+</script>
+<!-- end of fancybox -->
+<!-- SMOOTH SCROLL -->
+<script>
+$(function() {
+  $('a[href*=#]:not([href=#])').click(function() {
+    if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
+      var target = $(this.hash);
+      target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+      if (target.length) {
+        $('html,body').animate({
+          scrollTop: target.offset().top
+        }, 600);
+        return false;
+      }
+    }
+  });
+});
+</script>
+<!-- End of SMOOTH SCROLL -->
+<style>
+    
+    @font-face {
+    font-family: cengoth;
+    src: url(font/centurygothic.ttf);
+}
+    
+</style>
+</head>
+    
+    
+<body>
+    <!-- /////////////////Here goes header///////////////// -->
+    <div id="header">
+        <div id="container"> 
+            <div class="menu-item logo" id="logo"><img alt="Profile Photo" src="img/logo.png" /></div>
+            
+            <div class="menu-item">
+                  <a href="#about">ABOUT</a>
+            </div>
+            <div class="menu-item">
+                  <a href="#skill">SKILL</a>
+            </div>
+
+            <div class="menu-item">
+                  <a href="#worktitle">WORK</a>
+            </div>
+
+            <div class="menu-item">
+                  <a href="#contact">CONTACT</a>
+            </div>
+            <div class="menu-item">
+                  <a href="#">This Site is Still Under Construction, 网站建设中。</a>
+            </div>
+    
+            <div class="menu-item lang" id="lang"><div class="Chinese"></div><div class="Spanish"></div></div>
+        </div>
+    </div>
+    
+  <!-- ///////////////intro section///////////////// -->
+    <div  id="introcontainer">
+        <div class="intro" id="hola"><img alt="Hello"  src="img/hola.png" /></div>
+        <div class="intro" id="description"><h1>I'm Andrew Chou,</h1><br><h3>Web Developer & Designer</h3></div>
+    </div>
+    
+    <!-- /////////////////////about section///////////////////////// -->
+    <div id="about">
+        
+        <section> 
+            <h1>about me</h1>
+            <p>Hi I'm Andrew Chou, a 22-year-old web designer from China.
+            <br> My work is focused principally on UI and web design. Currently I am working as a freelancer.</p>
+        </section>
+      
+        <div class="pic" >
+            <img src="img/computer.svg" alt="computer" /> 
+            <h2>Computer</h2><h4>Half of my life is on Internet</h4></div>
+        <div class="pic" >
+            <img src="img/writing.svg" alt="writing" /> 
+            <h2>Reading & Writing</h2><h4>I really enjoy reading</h4></div>
+        <div class="pic" >
+            <img src="img/music.svg" alt="music" /> 
+            <h2>Music</h2><h4>I'm an amature guitarist</h4></div>
+  
+
+    </div>
+    
+    <!-- //////////////////skill section///////////////////-->
+    <div id="skill"></div> <!-- this div is for the anchor -->
+    <div id="idiomas">
+        <text><h1>Languages</h1><h3>I Speak</h3></text>
+        <img alt="Chinese" src="img/flag3.svg"/>
+        <img alt="English" src="img/flag2.svg"/>
+        <img alt="Spanish" src="img/flag1.svg"/> 
+    </div>
+    
+    <div id="softwares">
+        <text><h1>Softwares</h1><h3>I Use</h3></text>
+        <img alt="Illustrator" src="img/ai.svg"/>
+        <img alt="Photoshop" src="img/ps.svg"/>
+        <img alt="Dreamweaver" src="img/dr.svg"/>
+        <img alt="After Effects" src="img/ae.svg"/>
+    </div>
+    
+    <div id="codes">
+        <text><h1>Codes</h1><h3>I Write</h3></text>
+        <div class="column"><span>HTML5</span></div>
+        <div class="column"><span>CSS3</span></div>
+        <div class="column"><span>Javascript</span></div>
+        <div class="column"><span>Jquery</span></div>
+    </div>
+    <!--     ////////////////work section////////////////     -->
+    <div id="worktitle"><h1>my works</h1></div>
+    <div id="work">
+        <a class="fancybox" rel="group" href="work/big_image_1.jpg"><img src="work/small_image_1.jpg" alt="" /></a>
+        <a class="fancybox" rel="group" href="work/big_image_2.jpg"><img src="work/small_image_2.jpg" alt="" /></a>
+        <a class="fancybox" rel="group" href="work/big_image_3.jpg"><img src="work/small_image_3.jpg" alt="" /></a>
+        <a class="fancybox" rel="group" href="work/big_image_4.jpg"><img src="work/small_image_4.jpg" alt="" /></a>
+        <a class="fancybox" rel="group" href="work/big_image_5.jpg"><img src="work/small_image_5.jpg" alt="" /></a>
+        <a class="fancybox" rel="group" href="work/big_image_6.jpg"><img src="work/small_image_6.jpg" alt="" /></a>
+    </div>
+    <div id="option">
+        <div class="option"><a href="http://www.anzhu.us"><h3>You're Awesome!</h3><h4>Visit Homepage</h4></a></div>
+        <div class="option"><a href=""><h3>Not so Impressive!</h3><h4>See More</h4></a></div>
+    </div>
+    <!--     ////////////////finally the footer////////////////     -->
+    <footer id="contact">
+    <h1>Contact me: &nbsp;&nbsp;zzp@g.pl</h1>
+    <h1 style="display: inline; padding-right:2em;">Or</h1>
+      <a href="https://plus.google.com/+AndrewChouFromGoogle/posts"><img src="img/gplus.png" class="social"></img></a>
+      <a href="http://chouandrew.tumblr.com/"><img src="img/tumblr.png" class="social"></img></a>
+      <a href="https://twitter.com/chouandres"><img src="img/twitter.png" class="social"></img></a>
+      <a href="http://weibo.com/u/2282842635"><img src="img/weibo.png" class="social"></img></a>
+    </footer>
+</body>
+</html>
