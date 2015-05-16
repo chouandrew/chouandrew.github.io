@@ -1,31 +1,37 @@
-
-
-a:link{text-decoration:none;} 
-body {margin: 0; font-family: 'cengoth' sans-serif;}
+a {text-decoration:none;} 
+body {margin: 0; font-family: 'cengoth';}
 h1 {font-size: 3em;}
-#header   {width: 100%;
+header    {width: 100%;
            height: 5em;
            background-color: #2ecc71;
-           position: fixed;}
+           position: fixed;
+           z-index: 1;}
+#reheader{width: 100%; height: 5em;}
+nav {position: relative;
+            top: 1em; left: 6em; overflow: hidden;}
 
-#container {position: absolute;
-            top: 1em; left: 8em;}
-
-#logo img {height: 3em; width: 3em;
+nav img {height: 3em; width: 3em;
            border: 3px solid white;
            border-radius: 2.1875em; 
            vertical-align: middle;} 
 
-.menu-item {display: inline; }
+.menu-item {display: inline; padding-left: 2em;}
 
-.menu-item a {text-decoration: none; color: white;}
+.menu-item a {color: white;}
+#lang {display: inline-block; position: absolute; right: 4em; top: 1.92em;}
 
-#introcontainer {height: 43.75em; 
-                 background-color: #2ecc71;
-                 color: white;}
-#hola {width: 50%; float: left;}
-#hola img {width: 100%; }
-.intro {padding-top: 12em;}
+#intro {width: 100%;  height: 38em;
+        background: url(../img/intro.jpg) no-repeat ;
+        background-size: cover;
+       }
+#hello {width: auto;
+       background-color: rgba(255, 255, 255, 0.25);
+       display: inline-block;
+       color: white;
+       padding: 1.4em 8em 2em 4em;
+       margin-top: 6em;
+       margin-left: 13%;
+       }
 
 #about {text-align: center; padding-top: 5em; padding-bottom: 5em;}
 section p {padding-top: 1.5em; padding-bottom: 4em;  
@@ -35,24 +41,23 @@ section p {padding-top: 1.5em; padding-bottom: 4em;
 
 
 #skill {height: 5em;}
-text {display: inline-block; height: 100%; padding-left: 3.5em;}
-#idiomas {background-color: #16a085; height: 10em; color: white;}
-#idiomas img { width: 10em; float: right; }
-#softwares {background-color: #f1c40f; height: 10em; color: white; }
-#softwares img {width: 7em; float: right; }
-#codes {background-color: #f39c12; color: white; height: 10em;}
-.column {font-size: 2em; float: right; }
+text {display: inline-block; height: 100%; padding-left: 3.5em; width: 300px;}
+#idiomas {background-color: #16a085; height: 10em; color: white; min-width: 1200px;}
+.container {display: inline-block; width: 700px; margin-left: 10%;}
+#idiomas img { width: 10em; padding-right: 70px;  }
+#softwares {background-color: #f1c40f; height: 10em; color: white; min-width: 1200px; }
+#softwares img {width: 7em; padding-right: 54px; }
+#codes {background-color: #f39c12; color: white; height: 10em; min-width: 1200px;}
+#codes h2 {font-size: 2em; position: relative; bottom: 1.5em; display:inline-block; padding-right: 60px; }
 
 #worktitle{text-align: center; padding-bottom: 3em; padding-top: 5em;}
-#work {width: 66em; margin:auto;}
-.fancybox img {margin: 3em;}
-#option {margin-top: 3em;}
-.option {width: 49%; display: inline-block; 
-         text-align: center; background-color: #ecf0f1;}
+#work {width: 80%; margin:auto; text-align: center;}
+#work img {margin: auto; width:30%; }
 
-footer {background-color: #e67e22; 
-         height:30em;}
-footer h1 {padding-top: 4em; padding-left: 2em;}
+
+footer {background-color: #2ecc71; 
+         height:20em;}
+footer h1 {padding-top: 2em; padding-left: 2em;}
 footer img {width:5em; padding: 0.5em; vertical-align: middle;}
 
 

@@ -51,9 +51,9 @@ $(function() {
     
 <body>
     <!-- /////////////////Here goes header///////////////// -->
-    <div id="header">
-        <div id="container"> 
-            <div class="menu-item logo" id="logo"><img alt="Profile Photo" src="img/logo.png" /></div>
+    <header>
+        <nav> 
+            <img alt="Profile Photo" src="img/logo.png" />
             
             <div class="menu-item">
                   <a href="#about">ABOUT</a>
@@ -69,18 +69,17 @@ $(function() {
             <div class="menu-item">
                   <a href="#contact">CONTACT</a>
             </div>
-            <div class="menu-item">
-                  <a href="#">This Site is Still Under Construction, 网站建设中。</a>
-            </div>
-    
-            <div class="menu-item lang" id="lang"><div class="Chinese"></div><div class="Spanish"></div></div>
-        </div>
-    </div>
+        </nav>
+           
+            <div class="menu-item" id="lang"><a href="#">CH/</a><a href="#">ES</a></div>
+            
+    </header>
+    <div id="reheader"></div> <!--/////this div is to fill the gap////-->
     
   <!-- ///////////////intro section///////////////// -->
-    <div  id="introcontainer">
-        <div class="intro" id="hola"><img alt="Hello"  src="img/hola.png" /></div>
-        <div class="intro" id="description"><h1>I'm Andrew Chou,</h1><br><h3>Web Developer & Designer</h3></div>
+    <div  id="intro">
+        <div id="hello"><h1>Hello,</h1><h2>I'm Andrew Chou</h2><h4>Web Designer & Developer</h4></div>
+    
     </div>
     
     <!-- /////////////////////about section///////////////////////// -->
@@ -109,26 +108,25 @@ $(function() {
     <div id="skill"></div> <!-- this div is for the anchor -->
     <div id="idiomas">
         <text><h1>Languages</h1><h3>I Speak</h3></text>
-        <img alt="Chinese" src="img/flag3.svg"/>
+        <div class="container"><img alt="Chinese" src="img/flag3.svg"/>
         <img alt="English" src="img/flag2.svg"/>
-        <img alt="Spanish" src="img/flag1.svg"/> 
+        <img alt="Spanish" src="img/flag1.svg"/> </div>
     </div>
     
     <div id="softwares">
         <text><h1>Softwares</h1><h3>I Use</h3></text>
-        <img alt="Illustrator" src="img/ai.svg"/>
+        <div class="container"><img alt="Illustrator" src="img/ai.svg"/>
         <img alt="Photoshop" src="img/ps.svg"/>
         <img alt="Dreamweaver" src="img/dr.svg"/>
-        <img alt="After Effects" src="img/ae.svg"/>
+            <img alt="After Effects" src="img/ae.svg"/></div>
     </div>
     
     <div id="codes">
         <text><h1>Codes</h1><h3>I Write</h3></text>
-        <div class="column"><span>HTML5</span></div>
-        <div class="column"><span>CSS3</span></div>
-        <div class="column"><span>Javascript</span></div>
-        <div class="column"><span>Jquery</span></div>
-    </div>
+        <div class="container"><h2>HTML5</h2>
+        <h2>CSS3</h2>
+        <h2>Javascript</h2>
+        <h2>jQuery</h2></div> </div>
     <!--     ////////////////work section////////////////     -->
     <div id="worktitle"><h1>my works</h1></div>
     <div id="work">
@@ -139,10 +137,8 @@ $(function() {
         <a class="fancybox" rel="group" href="work/big_image_5.jpg"><img src="work/small_image_5.jpg" alt="" /></a>
         <a class="fancybox" rel="group" href="work/big_image_6.jpg"><img src="work/small_image_6.jpg" alt="" /></a>
     </div>
-    <div id="option">
-        <div class="option"><a href="http://www.anzhu.us"><h3>You're Awesome!</h3><h4>Visit Homepage</h4></a></div>
-        <div class="option"><a href=""><h3>Not so Impressive!</h3><h4>See More</h4></a></div>
-    </div>
+    
+   
     <!--     ////////////////finally the footer////////////////     -->
     <footer id="contact">
     <h1>Contact me: &nbsp;&nbsp;zzp@g.pl</h1>
