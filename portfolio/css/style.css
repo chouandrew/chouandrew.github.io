@@ -1,25 +1,27 @@
 a {text-decoration:none;} 
-body {margin: 0; font-family: 'cengoth';}
+body {margin: 0; font-family: 'cengoth'; min-width: 1000px;}
 h1 {font-size: 3em;}
 header    {width: 100%;
            height: 5em;
            background-color: #2ecc71;
            position: fixed;
-           z-index: 1;}
+           z-index: 1;
+           overflow: hidden;}
 #reheader{width: 100%; height: 5em;}
 nav {position: relative;
-            top: 1em; left: 6em; overflow: hidden;}
+            top: 1em; left: 6em; }
 
 nav img {height: 3em; width: 3em;
            border: 3px solid white;
-           border-radius: 2.1875em; 
+           border-radius: 2.1875em;  margin-right: 20px;
            vertical-align: middle;} 
+nav img:hover {box-shadow: 0px 0px 20px rgba(0, 0, 0, .5);}
+.menu-item {display: inline; margin-right: 10px; padding: 2em 1em 2em 1em; background-color:#2ecc71; color: white;}
 
-.menu-item {display: inline; padding-left: 2em;}
+.menu-item:hover {box-shadow: 0px 0px 10px rgba(0, 0, 0, .5);}
 
-.menu-item a {color: white;}
-#lang {display: inline-block; position: absolute; right: 4em; top: 1.92em;}
-
+#lang { display: inline-block; position: absolute; right: 4em; top: 0;}
+#lang a {color:white;}
 #intro {width: 100%;  height: 38em;
         background: url(../img/intro.jpg) no-repeat ;
         background-size: cover;
@@ -40,6 +42,7 @@ section p {padding-top: 1.5em; padding-bottom: 4em;
 .pic {display: inline-block; width: 30%; color: #C0C0C0;}
 
 
+
 #skill {height: 5em;}
 text {display: inline-block; height: 100%; padding-left: 3.5em; width: 300px;}
 #idiomas {background-color: #16a085; height: 10em; color: white; min-width: 1200px;}
@@ -48,17 +51,24 @@ text {display: inline-block; height: 100%; padding-left: 3.5em; width: 300px;}
 #softwares {background-color: #f1c40f; height: 10em; color: white; min-width: 1200px; }
 #softwares img {width: 7em; padding-right: 54px; }
 #codes {background-color: #f39c12; color: white; height: 10em; min-width: 1200px;}
-#codes h2 {font-size: 2em; position: relative; bottom: 1.5em; display:inline-block; padding-right: 60px; }
+#codes h2 {font-size: 31px; position: relative; bottom: 1.5em; display:inline-block; padding-right: 60px; }
+
+#idiomas:hover {box-shadow: 0px 0px 10px rgba(0, 0, 0, .8);}
+#softwares:hover {box-shadow: 0px 0px 10px rgba(0, 0, 0, .8);}
+#codes:hover {box-shadow: 0px 0px 10px rgba(0, 0, 0, .8);}
 
 #worktitle{text-align: center; padding-bottom: 3em; padding-top: 5em;}
 #work {width: 80%; margin:auto; text-align: center;}
 #work img {margin: auto; width:30%; }
 
+#work img:hover {box-shadow: 0px 0px 20px rgba(0, 0, 0, .8);}
 
-footer {background-color: #2ecc71; 
-         height:20em;}
-footer h1 {padding-top: 2em; padding-left: 2em;}
-footer img {width:5em; padding: 0.5em; vertical-align: middle;}
+
+footer {background-color: #2ecc71; color:white;
+         height:20em; text-align: center;}
+footer h2 {padding-top: 2em; padding-left: 2em;}
+footer img {width:5em; border-radius: 3em; margin: 0.5em 2em; vertical-align: middle;}
+footer img:hover {box-shadow: 0px 0px 20px rgba(0, 0, 0, .8);}
 
 
 
