@@ -4,8 +4,8 @@
 <meta charset="utf-8"/>
 <title>My Portfolio</title>
 <!-- Add CSS library -->
-<link rel="stylesheet" media="screen and (min-width: 1200px)" href='css/style.css' />
-<link rel="stylesheet" media="screen and (max-width: 1199px)" href='css/stylemobile.css' />
+<link rel="stylesheet" media="screen and (min-device-width: 1200px)" href='css/style.css' />
+<link rel="stylesheet" media="screen and (max-device-width: 1199px)" href='css/stylemobile.css' />
 <!-- Add jQuery library -->
 <script type="text/javascript" src="javascript/jquery.min.js"></script>
 <!-- Add fancyBox -->
@@ -39,7 +39,7 @@ $(function() {
 });
 </script>
 <!-- End of SMOOTH SCROLL -->
-<script src="javascript/googlemaps.js"></script>
+<script type="text/javascript" media="screen and (min-device-width: 1200px)" src="javascript/googlemaps.js"></script>
     <script>
       function initialize() {
         var mapCanvas = document.getElementById('mapcanvas');
@@ -71,7 +71,7 @@ $(function() {
            
             <a href="#about"><div class="menu-item"><p>ABOUT</p></div></a>
             <a href="#skill"><div class="menu-item"><p>SKILL</p></div></a>
-            <a href="#worktitle"><div class="menu-item"><p>WORK</p></div></a>
+            <a href="#work"><div class="menu-item"><p>WORK</p></div></a>
             <a href="#contact"><div class="menu-item"><p>CONTACT</p></div></a>
           
         </nav>
