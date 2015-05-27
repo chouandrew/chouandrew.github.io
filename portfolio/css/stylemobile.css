@@ -1,0 +1,69 @@
+body {margin:0; padding: 0; background-color: #dbdbdb; font-family: 'cengoth';}
+
+header{ height: 400px; width: 100%;
+        background: url(../img/intro.jpg) no-repeat ;
+        background-size: cover;
+        text-align: center; margin-bottom: 50px;
+}
+header img {  height: 100px; width: 100px;
+           position: absolute;
+           top: 80px; left:100px;  z-index: 1;     
+}
+#intro { position: absolute; top: 0; left:0;
+         height:200px; width:300px;
+         text-align: center; color: white;
+         padding-top: 200px;
+         background-color: rgba(0, 0, 0, 0.4);
+}
+
+#lang {display: none;}
+nav {position: fixed; bottom: 0; left:0; height:90px; width:100%; background-color: white; box-shadow: 0px 0px 4px rgba(0, 0, 0, .5); z-index: 2; }
+.menu-item{display: inline-block; width: 24%; height:100%; font-size: 30px; color:#7a7a7a; }
+
+section, .pic, #idiomas, #softwares, #codes, #work, #contact {text-align: center; width: 95%; margin: auto; background-color: white; box-shadow: 0px 0px 4px rgba(0, 0, 0, .5); border-top: 8px solid; border-radius: 5px; color: #575757; margin-bottom: 20px;}
+
+section { border-top-color: green;}
+section h1 {font-size: 40px; }
+section p {font-size: 20px; padding-bottom: 40px; width: 90%; margin: auto;}
+
+.pic {border-top-color: #ffd000;padding-top: 60px; padding-bottom: 60px;}
+.pic img {width: 50%;}
+
+#idiomas{border-top-color: #16a085; }
+#softwares{border-top-color: #f1c40f;}
+#codes{border-top-color: #f39c12;}
+
+.container {width:96%; margin-left: auto; margin-right: auto; border-radius: 10px;}
+.container:after{
+    content: ".";
+    width: 100%;
+    height: 20px;
+    display: block;
+    background-color: white;}
+
+#container1 {background-color: #16a085; }
+#container1 img {width: 28%; padding: 10px;}
+#container2 {background-color: #f1c40f; }
+#container2 img {width: 18%; padding: 15px;}
+#container3 {background-color: #f39c12; }
+#container3 h2 {display: inline-block; width: 24%; color: white;}
+
+#work{border-top-color: green;}
+#work h1 {padding-bottom: 30px; padding-top: 20px;}
+#work img {width:300px;padding: 10px;}
+
+#mapcanvas, #mailme {display: none;}
+#findme {padding: 20px;}
+#contact img{width:100px;padding: 20px;}
+
+#contact {margin-bottom: 150px;}
+
+@media (max-width:750px){
+    nav {height: 70px;}
+    .menu-item {font-size: 22px; }
+    header img {position: static; width: 150px; height: 150px; border: 2px solid white; border-radius: 200px; }
+    header:before {display: block; height: 325px; content: ".";}
+    #intro{position: static; padding: 0; width: 100%; height:200px;
+    background-color: rgba(0, 0, 0, 0); color: #575757;margin-top: 100px; }
+
+}

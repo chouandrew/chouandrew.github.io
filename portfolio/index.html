@@ -4,7 +4,8 @@
 <meta charset="utf-8"/>
 <title>My Portfolio</title>
 <!-- Add CSS library -->
-<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" media="screen and (min-width: 1200px)" href='css/style.css' />
+<link rel="stylesheet" media="screen and (max-width: 1199px)" href='css/stylemobile.css' />
 <!-- Add jQuery library -->
 <script type="text/javascript" src="javascript/jquery.min.js"></script>
 <!-- Add fancyBox -->
@@ -37,14 +38,27 @@ $(function() {
   });
 });
 </script>
-<!-- End of SMOOTH SCROLL -->
+<!-- End of SMOOTH SCROLL --><!--
+<script src="javascript/googlemaps.js"></script>
+    <script>
+      function initialize() {
+        var mapCanvas = document.getElementById('mapcanvas');
+        var mapOptions = {
+          center: new google.maps.LatLng(31.5583570,106.0050460),
+          zoom: 12,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        }
+        var map = new google.maps.Map(mapCanvas, mapOptions)
+      }
+      google.maps.event.addDomListener(window, 'load', initialize);
+    </script>                                 -->
+    <!-- end of google maps  -->   
 <style>
     
     @font-face {
     font-family: cengoth;
     src: url(font/centurygothic.ttf);
 }
-    
 </style>
 </head>
     
@@ -52,17 +66,17 @@ $(function() {
 <body>
     <!-- /////////////////Here goes header///////////////// -->
     <header>
+         <img alt="Profile Photo" src="img/logo.png" />
         <nav> 
-            <img alt="Profile Photo" src="img/logo.png" />
-            
-            <a href="#about"><div class="menu-item">ABOUT</div></a>
-            <a href="#skill"><div class="menu-item">SKILL</div></a>
-            <a href="#worktitle"><div class="menu-item">WORK</div></a>
-            <a href="#contact"><div class="menu-item">CONTACT</div></a>
+           
+            <a href="#about"><div class="menu-item"><p>ABOUT</p></div></a>
+            <a href="#skill"><div class="menu-item"><p>SKILL</p></div></a>
+            <a href="#worktitle"><div class="menu-item"><p>WORK</p></div></a>
+            <a href="#contact"><div class="menu-item"><p>CONTACT</p></div></a>
           
         </nav>
            
-            <div class="menu-item" id="lang"><a href="#">CH/</a><a href="#">ES</a></div>
+            <div id="lang"><a href="#"><p>CH</p></a><p>&nbsp;|&nbsp;</p><a href="#"><p>ES</p></a></div>
             
     </header>
     <div id="reheader"></div> <!--/////this div is to fill the gap////-->
@@ -99,14 +113,14 @@ $(function() {
     <div id="skill"></div> <!-- this div is for the anchor -->
     <div id="idiomas">
         <text><h1>Languages</h1><h3>I Speak</h3></text>
-        <div class="container"><img alt="Chinese" src="img/flag3.svg"/>
+        <div class="container" id="container1"><img alt="Chinese" src="img/flag3.svg"/>
         <img alt="English" src="img/flag2.svg"/>
         <img alt="Spanish" src="img/flag1.svg"/> </div>
     </div>
     
     <div id="softwares">
         <text><h1>Softwares</h1><h3>I Use</h3></text>
-        <div class="container"><img alt="Illustrator" src="img/ai.svg"/>
+        <div class="container" id="container2"><img alt="Illustrator" src="img/ai.svg"/>
         <img alt="Photoshop" src="img/ps.svg"/>
         <img alt="Dreamweaver" src="img/dr.svg"/>
             <img alt="After Effects" src="img/ae.svg"/></div>
@@ -114,13 +128,14 @@ $(function() {
     
     <div id="codes">
         <text><h1>Codes</h1><h3>I Write</h3></text>
-        <div class="container"><h2>HTML5</h2>
+        <div class="container" id="container3"><h2>HTML5</h2>
         <h2>CSS3</h2>
         <h2>Javascript</h2>
         <h2>jQuery</h2></div> </div>
     <!--     ////////////////work section////////////////     -->
-    <div id="worktitle"><h1>my works</h1></div>
+  
     <div id="work">
+        <h1>my works</h1>
         <a class="fancybox" rel="group" href="work/big_image_1.jpg"><img src="work/small_image_1.jpg" alt="" /></a>
         <a class="fancybox" rel="group" href="work/big_image_2.jpg"><img src="work/small_image_2.jpg" alt="" /></a>
         <a class="fancybox" rel="group" href="work/big_image_3.jpg"><img src="work/small_image_3.jpg" alt="" /></a>
@@ -132,12 +147,15 @@ $(function() {
    
     <!--     ////////////////finally the footer////////////////     -->
     <footer id="contact">
-    <h2>Contact me: &nbsp;&nbsp;zzp@g.pl</h2>
-    <h1>Or</h1>
+    <div id="findme" class="contact"><h2>Find me:</h2></div>
+    <div id="mapcanvas" class="contact"></div>
+    <div id="mailme" class="contact"><img alt="gmail" src="img/gmail.png" /><p>Mail Me<br/>zzp@g.pl</p></div>
+    <div id="footerimg" class="contact">
       <a href="https://plus.google.com/+AndrewChouFromGoogle/posts"><img src="img/gplus.png" class="social"></img></a>
       <a href="http://chouandrew.tumblr.com/"><img src="img/tumblr.png" class="social"></img></a>
       <a href="https://twitter.com/chouandres"><img src="img/twitter.png" class="social"></img></a>
       <a href="http://weibo.com/u/2282842635"><img src="img/weibo.png" class="social"></img></a>
-    </footer>
+    </div>
+</footer>
 </body>
 </html>
