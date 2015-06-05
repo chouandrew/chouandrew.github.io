@@ -1,34 +1,43 @@
 body {margin:0; padding: 0; background-color: #dbdbdb; font-family: 'cengoth';}
+a:link {text-decoration: none;}
+.invisible {opacity: 0;}
 
-header{ height: 400px; width: 100%;
-        background: url(../img/intro.jpg) no-repeat ;
-        background-size: cover;
-        text-align: center; margin-bottom: 50px;
-}
+#mobile-nav{position: fixed;left:-600px;top:0;
+            height:100%;width: 600px;
+            background-color:white; 
+            overflow-y: auto;
+            overflow-x: hidden;
+            z-index: 1;}
 
-header:before {display:block; height:325px ; content: ".";}
-header img {  height: 150px; 
-              position: static;
+#mobile-nav:before{content: url(../img/intro1.jpg); width:100%;}
+
+#nav-bar{ position: fixed; height: 160px; width: 100%; top: 0; background-color: green;}
+.button img { width:100px; height:100px;}
+.close-button {position: absolute; top: 30px; left:30px;}
+.open-button {display: inline-block; position: relative; top:30px; left:30px;}
+#nav-bar p {display: inline-block; font-size: 60px; color:white; padding-left: 50px; margin: 0;}
+
+#profile {  height: 150px;
+              margin: -60px 0 30px 220px;
               border:5px solid white; 
-              border-radius: 300px; z-index: 1;}
+              border-radius: 300px; z-index: 1;
+              box-shadow: 0px 0px 20px rgba(0, 0, 0, .8);}
 
-
-#intro { position: static; padding: 0;
-         height:300px; width:100%;
-         text-align: center; color: #575757;
-         margin-top: 110px;
-         background-color: rgba(0, 0, 0, 0);
-}
-#hello h1 {font-size: 4em;}
-#hello h2 {font-size: 2em;}
-#hello h4 {font-size: 1.3em;}
+#intro { width:100%;
+         text-align: center; color: #575757;}
+#hello h1 {font-size: 5em; margin: 0;}
+#hello h2 {font-size: 2em; margin: 10px 0 20px 0;}
+#hello h4 {font-size: 1.3em; margin: 0; }
 #lang {display: none;}
-nav {position: fixed; bottom: 0; left:0; height:90px; width:100%; background-color: white; box-shadow: 0px 0px 4px rgba(0, 0, 0, .5); z-index: 2; }
-.menu-item{display: inline-block; width: 24%; height:100%; font-size: 30px; color:#7a7a7a;  }
+
+nav {position: absolute; top: 850px; width: 100%;}
+.menu-item{ height:100px; border-top: 1px solid #d1d1d1}
+.menu-item p {font-size: 30px; color:#575757;  display: inline; position: relative; top:35px; left: 80px;}
 
 section, .pic, #idiomas, #softwares, #codes, #work, #contact {text-align: center; width: 95%; margin: auto; background-color: white; box-shadow: 0px 0px 4px rgba(0, 0, 0, .5); border-top: 8px solid; border-radius: 5px; color: #575757; margin-bottom: 20px;}
 
-section { border-top-color: green;}
+
+section { border-top-color: green; margin-top: 300px;}
 section h1 {font-size: 40px; }
 section p {font-size: 20px; padding-bottom: 40px; width: 90%; margin: auto;}
 

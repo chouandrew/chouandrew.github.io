@@ -11,77 +11,7 @@
 <!-- Add fancyBox -->
 <link rel="stylesheet" href="fancybox/source/jquery.fancybox.css" type="text/css" media="screen" />
 <script type="text/javascript" src="fancybox/source/jquery.fancybox.pack.js"></script>
-<!-- fancybox effects -->
-<script>
-$(document).ready(function() {
-	$(".fancybox").fancybox({
-		openEffect	: 'elastic',
-		closeEffect	: 'elastic'
-	});
-});
-</script>
-<!-- end of fancybox -->
-<!-- SMOOTH SCROLL -->
-<script>
-$(function() {
-  $('a[href*=#]:not([href=#])').click(function() {
-    if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
-      var target = $(this.hash);
-      target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
-      if (target.length) {
-        $('html,body').animate({
-          scrollTop: target.offset().top
-        }, 600);
-        return false;
-      }
-    }
-  });
-});
-</script>
-<!-- End of SMOOTH SCROLL -->
-<script type="text/javascript" src="javascript/googlemaps.js"></script>
-    <script>
-      function initialize() {
-        var mapCanvas = document.getElementById('mapcanvas');
-        var mapOptions = {
-          center: new google.maps.LatLng(31.5583570,106.0050460),
-          zoom: 12,
-          mapTypeId: google.maps.MapTypeId.ROADMAP
-        }
-        var map = new google.maps.Map(mapCanvas, mapOptions)
-      }
-      if($(window).width() > 1200){
-      google.maps.event.addDomListener(window, 'load', initialize);};
-    </script>                              
-    <!-- end of google maps  -->   
-    <script>
 
-    $(function(){
-  var prevScroll = 0,
-      curDir = 'down',
-      prevDir = 'up';
-  
-  $(window).scroll(function(){
-    	if(($(this).scrollTop() >= prevScroll)&&($(window).width()<1200)){
-          curDir = 'down'; 
-          if(curDir != prevDir){
-          $('nav').stop();
-    	  	$('nav').animate({ bottom: '-90px' }, 300);
-          prevDir = curDir;
-          }
-      } else {
-          curDir = 'up';
-          if(curDir != prevDir){
-          $('nav').stop();
-          $('nav').animate({ bottom: '0px' }, 300);
-          prevDir = curDir;
-          }
-      }
-      prevScroll = $(this).scrollTop();
-  });
-})
-    </script>
-    <!-- end of scroll hide nav bar -->
 <style>
     
     @font-face {
@@ -89,33 +19,70 @@ $(function() {
     src: url(font/centurygothic.ttf);
 }
 </style>
+    <!--mobile nav menu -->
+<script>
+$(window).on('scroll', function() {
+    
+    if ($(this).scrollTop() > 20 && $('#nav-bar').hasClass('invisible')) {
+        $('#nav-bar').animate({opacity : 1}, 1000, function() {
+            $(this).removeClass('invisible');
+        });
+    } else if ($(this).scrollTop() <= 20 && !$('#nav-bar').hasClass('invisible')) {
+        $('#nav-bar').animate({opacity : 0}, 1000, function() {
+            $(this).addClass('invisible');
+        });
+    }
+});
+function nav(){
+    $('.open-button').click(function(){
+        $('#mobile-nav').animate({left: 0}, 200);
+    });
+    $('.close-button').click(function(){
+        $('#mobile-nav').animate({left: '-600px'}, 200);
+    });
+    $('.menu-item').click(function(){
+        $('#mobile-nav').animate({left: '-600px'}, 200);
+    });
+};
+$('.open-button').ready(nav);
+    
+
+</script>
+<!-- end mobile nav menu -->
 </head>
     
     
 <body>
     <!-- /////////////////Here goes header///////////////// -->
-    <header>
-         <img alt="Profile Photo" src="img/logo.png" />
-        <nav> 
+    <div id="mobile-nav">
+        <header>
+            <div class="button close-button"><img src="img/close-button.svg"/></div>
+            <img id="profile" alt="Profile Photo" src="img/logo.png" />
+            <nav> 
            
-            <a href="#about"><div class="menu-item"><p>ABOUT</p></div></a>
-            <a href="#skill"><div class="menu-item"><p>SKILL</p></div></a>
-            <a href="#work"><div class="menu-item"><p>WORK</p></div></a>
-            <a href="#contact"><div class="menu-item"><p>CONTACT</p></div></a>
+                <a href="#about"><div class="menu-item"><p>About</p></div></a>
+                <a href="#skill"><div class="menu-item"><p>Skill</p></div></a>
+                <a href="#work"><div class="menu-item"><p>Work</p></div></a>
+                <a href="#contact"><div class="menu-item"><p>Contact</p></div></a>
           
-        </nav>
-           
+            </nav>
+      
             <div id="lang"><a href="#"><p>CH</p></a><p>&nbsp;|&nbsp;</p><a href="#"><p>ES</p></a></div>
             
-    </header>
-    <div id="reheader"></div> <!--/////this div is to fill the gap////-->
+        </header>
+        <div id="reheader"></div> <!--/////this div is to fill the gap////-->
     
   <!-- ///////////////intro section///////////////// -->
-    <div  id="intro">
-        <div id="hello"><h1>Hello</h1><h2>I'm Andrew Chou</h2><h4>Web Designer & Developer</h4></div>
+        <div  id="intro">
+            <div id="hello"><h1>Hello</h1><h2>I'm Andrew Chou</h2><h4>Web Designer & Developer</h4></div>
     
+        </div>
     </div>
-    
+    <!-- mobile nav -->
+    <div id="nav-bar" class="invisible">
+    <div class="button open-button"><img src="img/open-button.svg"/></div>
+        <p>Andrew Chou</p>
+        </div>
     <!-- /////////////////////about section///////////////////////// -->
     <div id="about">
         
@@ -188,5 +155,53 @@ $(function() {
       <div id="gap"></div>
     </div>
 </footer>
+
+<!-- fancybox effects -->
+<script>
+$(document).ready(function() {
+	$(".fancybox").fancybox({
+		openEffect	: 'elastic',
+		closeEffect	: 'elastic'
+	});
+});
+</script>
+<!-- end of fancybox -->
+<!-- SMOOTH SCROLL -->
+<script>
+$(function() {
+  $('a[href*=#]:not([href=#])').click(function() {
+    if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
+      var target = $(this.hash);
+      target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+      if (target.length) {
+        $('html,body').animate({
+          scrollTop: target.offset().top
+        }, 600);
+        return false;
+      }
+    }
+  });
+});
+</script>
+<!-- End of SMOOTH SCROLL -->
+
+   
+<!-- Google Maps API  -->   
+<script type="text/javascript" src="javascript/googlemaps.js"></script>
+    <script>
+        if($(window).width() > 1200){
+      function initialize() {
+        var mapCanvas = document.getElementById('mapcanvas');
+        var mapOptions = {
+          center: new google.maps.LatLng(31.5583570,106.0050460),
+          zoom: 12,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        }
+        var map = new google.maps.Map(mapCanvas, mapOptions)
+      }
+      
+      google.maps.event.addDomListener(window, 'load', initialize);};
+    </script>                              
+<!-- End of Google Maps  -->   
 </body>
 </html>
