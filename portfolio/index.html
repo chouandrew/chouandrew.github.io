@@ -19,36 +19,7 @@
     src: url(font/centurygothic.ttf);
 }
 </style>
-    <!--mobile nav menu -->
-<script>
-$(window).on('scroll', function() {
-    
-    if ($(this).scrollTop() > 20 && $('#nav-bar').hasClass('invisible')) {
-        $('#nav-bar').animate({opacity : 1}, 1000, function() {
-            $(this).removeClass('invisible');
-        });
-    } else if ($(this).scrollTop() <= 20 && !$('#nav-bar').hasClass('invisible')) {
-        $('#nav-bar').animate({opacity : 0}, 1000, function() {
-            $(this).addClass('invisible');
-        });
-    }
-});
-function nav(){
-    $('.open-button').click(function(){
-        $('#mobile-nav').animate({left: 0}, 200);
-    });
-    $('.close-button').click(function(){
-        $('#mobile-nav').animate({left: '-600px'}, 200);
-    });
-    $('.menu-item').click(function(){
-        $('#mobile-nav').animate({left: '-600px'}, 200);
-    });
-};
-$('.open-button').ready(nav);
-    
-
-</script>
-<!-- end mobile nav menu -->
+   
 </head>
     
     
@@ -80,7 +51,7 @@ $('.open-button').ready(nav);
     </div>
     <!-- mobile nav -->
     <div id="nav-bar" class="invisible">
-    <div class="button open-button"><img src="img/open-button.svg"/></div>
+    <div class="button open-button" id="open"><img src="img/open-button.svg"/></div>
         <p>Andrew Chou</p>
         </div>
     <!-- /////////////////////about section///////////////////////// -->
@@ -184,7 +155,41 @@ $(function() {
 });
 </script>
 <!-- End of SMOOTH SCROLL -->
+ <!--mobile nav menu -->
+<script>
+$(function() {
+	//caches a jQuery object containing the header element
+	var header = $('#nav-bar');
+	$(window).scroll(function() {
+		var scroll = $(window).scrollTop();
 
+		if (scroll >= 50) {
+			header.removeClass('invisible').fadeIn(500);
+		} else {
+			header.fadeOut(500).addClass('invisible');
+		}
+	});
+});
+    //
+$(function() {
+    $('.open-button').click(function(){
+        $('#mobile-nav').animate({left: 0}, 200);
+    });
+    $('.close-button').click(function(){
+        $('#mobile-nav').animate({left: '-600px'}, 200);
+    });
+    $('.menu-item').click(function(){
+        $('#mobile-nav').animate({left: '-600px'}, 200);
+    });
+    
+    $( "section, .pic, #idiomas, #softwares, #codes, #work, #contact" ).click(function(){
+        $('#mobile-nav').animate({left: '-600px'}, 200);
+    });
+});
+    
+
+</script>
+<!-- end mobile nav menu -->
    
 <!-- Google Maps API  -->   
 <script type="text/javascript" src="javascript/googlemaps.js"></script>

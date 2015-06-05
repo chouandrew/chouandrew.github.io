@@ -1,4 +1,4 @@
-body {margin:0; padding: 0; background-color: #dbdbdb; font-family: 'cengoth';}
+body {margin:0; padding: 0; background-color: #dbdbdb; font-family: 'cengoth'; min-width: 600px;}
 a:link {text-decoration: none;}
 .invisible {opacity: 0;}
 
@@ -11,7 +11,7 @@ a:link {text-decoration: none;}
 
 #mobile-nav:before{content: url(../img/intro1.jpg); width:100%;}
 
-#nav-bar{ position: fixed; height: 160px; width: 100%; top: 0; background-color: green;}
+#nav-bar{ position: fixed; height: 160px; width: 100%; top: 0; background-color: green;min-width: 600px;}
 .button img { width:100px; height:100px;}
 .close-button {position: absolute; top: 30px; left:30px;}
 .open-button {display: inline-block; position: relative; top:30px; left:30px;}
@@ -65,7 +65,7 @@ section p {font-size: 20px; padding-bottom: 40px; width: 90%; margin: auto;}
 
 #work{border-top-color: green;}
 #work h1 {padding-bottom: 30px; padding-top: 20px;}
-#work img {width:300px;padding: 10px;}
+#work img {width:75%;padding: 10px;}
 #gap{height:40px; width:100%;}
 #mapcanvas, #mailme {display: none;}
 #findme {padding: 20px;}
