@@ -1,6 +1,6 @@
 a {text-decoration:none;} 
 body {margin: 0; font-family: 'cengoth'; min-width: 1200px;}
-.button, #nav-bar, #open p{display: none;}
+.button, #nav-bar {display: none !important;}
 h1 {font-size: 3em;}
 header    {width: 100%;
            height: 80px;
@@ -8,7 +8,6 @@ header    {width: 100%;
            position: fixed;
            z-index: 1;}
 #reheader {width: 100%; height: 80px;}
-
 nav {position: relative;
     left: 10em;height:5em; }
 
