@@ -4,7 +4,51 @@
 <meta charset="utf-8">
 <title>支付清算</title>
 <style>
-   
+    body{
+        background-color: #355C7D;
+    }
+    .calcuBox {
+        width:100%;
+        margin:100px auto;
+        text-align: center;
+    }
+    input {
+        outline-style: none;
+        border: 0px;
+        text-align: center;
+    }
+    input, span, p {
+        font-size: 50px;
+        color: white;
+    }
+
+    ul {
+        list-style: none;
+    }
+    .inputBox {
+        width:300px;
+        background-color: #027790;
+        border-radius: 30px;
+    }
+    .inputNumBox {
+        width:180px;
+        background-color: #027790;
+        border-radius: 30px;
+    }
+    .Button{
+        color: white;
+        background-color: #F67280;
+        height: 100px;
+        width:300px;
+        margin:20px;
+        border-radius: 50px;
+    }
+    .removeButton{
+        background-color: #F67280;
+        margin-left: 20px;
+        border-radius: 50px;
+    }
+
 </style>
 <script>
     
@@ -14,11 +58,14 @@
         var removeButton = document.createElement("input");
         var inputName = document.createElement("input");
         var inputPayment = document.createElement("input");
-        var newSpan = document.createElement("span")
+        var newSpan = document.createElement("span");
+        var newbr = document.createElement("br");
         inputName.type = "text";
-        inputName.value = "名字";
+        inputName.placeholder = "名字";
+        inputName.className = "inputBox";
         inputPayment.type = "number";
         inputPayment.value = "0";
+        inputPayment.className = "inputNumBox";
         removeButton.type = "button";
         removeButton.value = "移除";
         removeButton.className = "removeButton";
@@ -27,12 +74,13 @@
             removeButton.parentNode.remove(removeButton.parentNode);
         };
         // .onclick 不能直接 = "removeLine()",要加一个 function(){};
-        newSpan.textContent = " 已支付 ";
+        newSpan.textContent = "  已支付  ";
         newlist.appendChild(inputName);
         newlist.appendChild(newSpan);
         newlist.appendChild(inputPayment);
         newlist.appendChild(removeButton);
         list.appendChild(newlist);
+        list.appendChild(newbr);
     };
     
     function Calculate(){
@@ -46,8 +94,10 @@
             var name = AllList[i].children[0].value;
             var paid = Number(AllList[i].children[2].value);
             //避免名字重复
-            if (total.has(name)){
-                alert("名字不能重复！")
+            if (total.has(name)||name==""){
+                alert("名字不能为空，且不能重复！");
+                throw new Error("Name shall not repeat");
+                //这里需要增加停止继续进行的命令
             } else {
             total.set(name,paid);
             sum = sum + paid;
@@ -75,7 +125,7 @@
                 if (due.get(key_d)<=gain.get(key_g)){
                     var newPdiv = document.getElementById("newPdiv");
                     var newP = document.createElement("p");
-                    newP.textContent = key_d + " 应该给 " + key_g + " " + due.get(key_d);
+                    newP.textContent = key_d + " 应该给 " + key_g + " " + due.get(key_d).toFixed(2); //保留两位小数
                     newPdiv.appendChild(newP);
                     gain.set(key_g,gain.get(key_g)-due.get(key_d));
                     due.set(key_d,0);
@@ -84,7 +134,7 @@
                 if (due.get(key_d)>gain.get(key_g)){
                     var newPdiv = document.getElementById("newPdiv");
                     var newP = document.createElement("p");
-                    newP.textContent = key_d + " 应该给 " + key_g + " " + gain.get(key_g);
+                    newP.textContent = key_d + " 应该给 " + key_g + " " + gain.get(key_g).toFixed(2);
                     newPdiv.appendChild(newP);
                     due.set(key_d,due.get(key_d)-gain.get(key_g));
                     gain.set(key_g,0);
@@ -92,28 +142,28 @@
             };
         };
     };
-    
-
 </script>
 </head>
 <body>
-    <h3>请输入名字和支付金额进行计算：</h3>
+    <div class="calcuBox">
+    <p>请输入名字和支付金额进行计算：<p>
     <ul id="formlist">
         <li>
-            <input type="text" value="名字" />
+            <input type="text" placeholder="名字" class="inputBox"/>
             <span> 已支付 </span>
-            <input type="number" value="0" />
-        </li>
+            <input type="number" value="0" class="inputNumBox"/>
+        </li><br>
         <li>
-            <input type="text" value="名字" />
+            <input type="text" placeholder="名字" class="inputBox"/>
             <span> 已支付 </span>
-            <input type="number" value="0" />
-        </li>
+            <input type="number" value="0" class="inputNumBox"/>
+        </li><br>
     </ul>
-    <input type="button" class="addButton" value="增加一人"/ onclick="addLine()">
-    <input type="button" id="calculate" value="点击计算" onclick="Calculate()" />
+    <input type="button" class="Button" value="增加一人"/ onclick="addLine()">
+    <input type="button" class="Button" value="点击计算" onclick="Calculate()" />
     <p>结算结果如下：</p>
-    <p>----------------------------------------------------</p>
+    <p>------------------------------------------</p>
     <div id="newPdiv"></div>
+    </div>
 </body>
 </html>
