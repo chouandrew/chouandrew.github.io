@@ -18,20 +18,23 @@
         text-align: center;
     }
     input, span, p {
-        font-size: 50px;
+        font-size: 40px;
         color: white;
     }
 
     ul {
         list-style: none;
     }
+    li {
+        margin-bottom: 30px;
+    }
     .inputBox {
-        width:300px;
+        width:200px;
         background-color: #027790;
         border-radius: 30px;
     }
     .inputNumBox {
-        width:180px;
+        width:120px;
         background-color: #027790;
         border-radius: 30px;
     }
@@ -59,7 +62,6 @@
         var inputName = document.createElement("input");
         var inputPayment = document.createElement("input");
         var newSpan = document.createElement("span");
-        var newbr = document.createElement("br");
         inputName.type = "text";
         inputName.placeholder = "名字";
         inputName.className = "inputBox";
@@ -80,7 +82,6 @@
         newlist.appendChild(inputPayment);
         newlist.appendChild(removeButton);
         list.appendChild(newlist);
-        list.appendChild(newbr);
     };
     
     function Calculate(){
@@ -142,6 +143,8 @@
             };
         };
     };
+    
+
 </script>
 </head>
 <body>
