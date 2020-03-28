@@ -1,0 +1,119 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>支付清算</title>
+<style>
+   
+</style>
+<script>
+    
+    function addLine(){
+        var list = document.getElementById("formlist");
+        var newlist = document.createElement("li")
+        var removeButton = document.createElement("input");
+        var inputName = document.createElement("input");
+        var inputPayment = document.createElement("input");
+        var newSpan = document.createElement("span")
+        inputName.type = "text";
+        inputName.value = "名字";
+        inputPayment.type = "number";
+        inputPayment.value = "0";
+        removeButton.type = "button";
+        removeButton.value = "移除";
+        removeButton.className = "removeButton";
+        // 不能用 .class
+        removeButton.onclick = function(){
+            removeButton.parentNode.remove(removeButton.parentNode);
+        };
+        // .onclick 不能直接 = "removeLine()",要加一个 function(){};
+        newSpan.textContent = " 已支付 ";
+        newlist.appendChild(inputName);
+        newlist.appendChild(newSpan);
+        newlist.appendChild(inputPayment);
+        newlist.appendChild(removeButton);
+        list.appendChild(newlist);
+    };
+    
+    function Calculate(){
+        var toremove = document.getElementById("newPdiv");
+        toremove.innerHTML='';
+        //移除已存在的paragraphs
+        var AllList = document.getElementsByTagName("li");
+        var sum = 0;
+        var total = new Map();
+        for (i=0;i<AllList.length;i++){
+            var name = AllList[i].children[0].value;
+            var paid = Number(AllList[i].children[2].value);
+            //避免名字重复
+            if (total.has(name)){
+                alert("名字不能重复！")
+            } else {
+            total.set(name,paid);
+            sum = sum + paid;
+                };
+        };
+        var ave = sum/AllList.length;
+        var due = new Map();
+        var gain = new Map();
+        
+        for(let [key,value] of total.entries()){
+            if (value > ave){
+                gain.set(key, value-ave);
+            };
+            if (value < ave) {
+                due.set(key, ave-value)
+            };
+        
+        };
+
+        for (let key_d of due.keys()){
+            for (let key_g of gain.keys()){
+                if (gain.get(key_g) == 0){
+                    continue;
+                };
+                if (due.get(key_d)<=gain.get(key_g)){
+                    var newPdiv = document.getElementById("newPdiv");
+                    var newP = document.createElement("p");
+                    newP.textContent = key_d + " 应该给 " + key_g + " " + due.get(key_d);
+                    newPdiv.appendChild(newP);
+                    gain.set(key_g,gain.get(key_g)-due.get(key_d));
+                    due.set(key_d,0);
+                    break;
+                };
+                if (due.get(key_d)>gain.get(key_g)){
+                    var newPdiv = document.getElementById("newPdiv");
+                    var newP = document.createElement("p");
+                    newP.textContent = key_d + " 应该给 " + key_g + " " + gain.get(key_g);
+                    newPdiv.appendChild(newP);
+                    due.set(key_d,due.get(key_d)-gain.get(key_g));
+                    gain.set(key_g,0);
+                };
+            };
+        };
+    };
+    
+
+</script>
+</head>
+<body>
+    <h3>请输入名字和支付金额进行计算：</h3>
+    <ul id="formlist">
+        <li>
+            <input type="text" value="名字" />
+            <span> 已支付 </span>
+            <input type="number" value="0" />
+        </li>
+        <li>
+            <input type="text" value="名字" />
+            <span> 已支付 </span>
+            <input type="number" value="0" />
+        </li>
+    </ul>
+    <input type="button" class="addButton" value="增加一人"/ onclick="addLine()">
+    <input type="button" id="calculate" value="点击计算" onclick="Calculate()" />
+    <p>结算结果如下：</p>
+    <p>----------------------------------------------------</p>
+    <div id="newPdiv"></div>
+</body>
+</html>
