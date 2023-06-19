@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>TOEFL Speaking Mock Test</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="main.js" defer></script>
+</head>
+
+<body>
+    <header>
+        <h1 id="question-title">Instructions</h1>
+        <div class="nav-buttons">
+            <button id="back-btn" onclick="loadPreviousQuestion()" disabled></button>
+            <button id="next-btn" onclick="loadNextQuestion()" disabled></button>
+        </div>
+    </header>
+
+    <div id="content">
+        <!-- Instructions and Continue Button -->
+        <div id="instructions">
+            <h3>Speaking Section Directions</h3>
+            <p>
+                In this Speaking practice test. YOU will be able to demonstrate your ability to speak about a variety of topics. You will answer six questions by speaking into a microphone. Answer each of the questions as completely as possible.
+                
+                In questions I and 2, you will speak about familiar topics. Your response will be scored on your ability to speak clearly and coherently about the topics.
+                
+                In questions 3 and 4. You will first read a short text. The text will go away and you will then listen to a talk on the same topic. You will then be asked a question about what you have read and heard You will need to combine appropriate information from the text and the talk to provide a complete answer to the question Your response will be scored on your ability to speak clearly and coherently and on your ability to accurately convey information about what you have read and heard In questions 5 and 6, you will listen to part of a conversation or a lecture. You will then be asked a question about what you have heard. Your response will be scored on your ability to speak clearly and coherently and on your ability to accurately convey information about what you heard. In questions 3 through 6, you may take notes while you read and while you listen to the conversations and lectures. You may use your notes to help prepare your response.
+                
+                Listen carefully to the directions for each question. The directions will not be written on the screen. For each question, you will be given a short time to prepare your response (15 to 30 seconds, depending on the question). A clock will show how much preparation time is remaining. When the preparation time is up, you will be told to begin your response. A clock will show how much response time is remaining. A message will appear on the screen when the response time has ended.
+                
+                In this practice test, you can click on Stop Recording to stop the recording of your response. You can also click on Playback Response to hear your recording. Once you have heard your response, you will have the opportunity to record your response again or confirm that you want to keep your response. In questions 3 through 6, you can click on Replay Talk if you want to listen to the conversations or lectures again. During this practice test, you may click the Pause icon at anytime. This will stop the test until you decide to continue. You may continue the test in a few minutes or at any time during the period that your test is activated.
+                
+                Please note that the Stop Recording. Playback Response. Replay Talk, and Pause icons are available only for this practice test. They will NOT be available during the actual test. If you do not use these functions, your experience will be closer to the actual TOEFL test experience. Performance on the Speaking Practice test is not necessarily a predictor of how you might perform during an actual TOEFL administration.
+                
+                <br>Click on Continue to go on.
+            </p>
+                <button id="continue-btn" onclick="startQ1()">Continue</button>
+        </div>
+        
+
+        <!-- Common Template for Each Question -->
+        <div id="question-template" style="display: none;">
+            <!-- Timer -->
+            <div id="timer" style="display: none;">
+                <p id="reading-timer">Reading time: 45 seconds</p>
+            </div>
+        
+            <!-- Images -->
+            <img class="question-image" id="image-listening" src="listening.jpg" style="display: none;">
+            <img class="question-image" id="image-dorm" src="dorm.jpg" style="display: none;">
+            <img class="question-image" id="image-conversation" src="conversation.jpg" style="display: none;">
+            <img class="question-image" id="image-lecture" src="lecture.jpg" style="display: none;">
+            <img class="question-image" id="image-lecture2" src="lecture2.jpg" style="display: none;">
+            
+            <!-- Audio Files -->
+            <audio id="instruction-audio-q1" src="audio/inst_q_1.mp3"></audio>
+            <audio id="instruction-audio-q2" src="audio/inst_q_2.mp3"></audio>
+            <audio id="instruction-audio-q3" src="audio/inst_q_3.mp3"></audio>
+            <audio id="instruction-audio-q4" src="audio/inst_q_4.mp3"></audio>
+            <audio id="begin-reading-q2" src="audio/begin_reading_q_2.mp3"></audio>
+            <audio id="begin-reading-q3" src="audio/begin_reading_q_3.mp3"></audio>
+            <audio id="task-audio-2" src="audio/task_2.mp3"></audio>
+            <audio id="task-audio-3" src="audio/task_3.mp3"></audio>
+            <audio id="task-audio-4" src="audio/task_4.mp3"></audio>
+            
+            <!-- Question Text -->
+            <p id="question-text" style="display: none;"></p>
+            <div id="reading-q2" style="display: none;">
+                <h3 id="reading-h-q2">History Seminars Should Be Shorter</h3>
+                <p id="reading-text-q2">
+                    Currently, all of the seminar classes in the history department are three hours long. I would like to propose that history seminars be shortened to two hours. I make this proposal for two reasons. First, most students just cannot concentrate for three hours straight. I myself have taken these three-hour seminars and found them tiring and sometimes boring.
+                    <br><br>Also, when a seminar lasts that long, people stop concentrating and stop learning, so the third hour of a three-hour seminar is a waste of everyone's time. Two-hour seminars would be much more efficient.
+                    <br><br>Tim Anderson
+                </p>
+            </div>
+            <div id="reading-q3" style="display: none;">
+                <h3 id="reading-h-q3">Target Marketing</h3>
+                <p id="reading-text-q3">
+                    Advertisers in the past have used radio and television in an attempt to provide information about their products to large, general audiences; it was once thought that the best way to sell a product was to advertise it to as many people as possible. However, more recent trends in advertising have turned toward target marketing. Target marketing is the strategy of advertising to smaller, very specific audiences- audiences that have been determined to have the greatest need or desire for the product being marketed. Target marketing has proved to be very effective in reaching potential customers.
+                </p>
+            </div>
+            
+            <!-- Timers -->
+
+            <div id="timers" style="display: none;">
+                <p id="prep-timer"></p>
+                <p id="response-timer"></p>
+            </div>
+            
+            <!-- Other Audios -->
+            <audio id="speaking-prepare-audio" src="audio/speaking_prepare.mp3"></audio>
+            <audio id="beep-audio" src="audio/beep.mp3"></audio>
+            <audio id="speaking-speak-audio" src="audio/speaking_speak.mp3"></audio>
+        </div>
+        
+    </div>
+</body>
+
+</html>
