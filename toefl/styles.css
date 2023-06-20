@@ -81,10 +81,12 @@ h3 {
 
 #back-btn {
     background-image: url('btnBack.png');
+    background-color: transparent;
 }
 
 #next-btn {
     background-image: url('btnNext.png');
+    background-color: transparent;
 }
 
 #back-btn:disabled, #next-btn:disabled {
