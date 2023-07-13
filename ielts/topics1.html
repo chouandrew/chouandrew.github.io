@@ -4327,6 +4327,26 @@
  
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
+  <script>
+        const tableCells = document.querySelectorAll('td');
+        let firstColumnHidden = false;
+
+        tableCells.forEach(cell => {
+            cell.addEventListener('click', function() {
+                const firstColumnCells = document.querySelectorAll('td:nth-child(1)');
+                
+                firstColumnCells.forEach(firstColumnCell => {
+                    if (firstColumnHidden) {
+                        firstColumnCell.style.display = 'table-cell';
+                    } else {
+                        firstColumnCell.style.display = 'none';
+                    }
+                });
+
+                firstColumnHidden = !firstColumnHidden;
+            });
+        });
+    </script>
 
 </body>
 
