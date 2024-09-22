@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flashcards</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f5f5f5;
+        }
+        .container {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .card {
+            margin: 20px auto;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            cursor: pointer;
+            width: 300px;
+            min-height: 200px;
+            perspective: 1000px;
+            transition: transform 0.3s ease;
+        }
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 10px;
+        }
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            padding: 20px;
+            box-sizing: border-box;
+            background-color: white;
+            overflow-y: auto;
+        }
+        .card-back {
+            transform: rotateY(180deg);
+        }
+        .card.swiped-left {
+            animation: swipeLeft 0.3s forwards;
+        }
+        .card.swiped-right {
+            animation: swipeRight 0.3s forwards;
+        }
+        @keyframes swipeLeft {
+            to {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+        }
+        @keyframes swipeRight {
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .progress {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+        #startOver {
+            background-color: #f44336;
+            margin-top: 10px;
+        }
+        #startOver:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="startPage">
+            <h1>Flashcards App</h1>
+            <input type="number" id="startNumber" placeholder="Start Number">
+            <input type="number" id="endNumber" placeholder="End Number">
+            <button id="startButton">Start</button>
+        </div>
+        <div id="flashcardPage" style="display: none;">
+            <div class="card" id="flashcard">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <h2 id="word"></h2>
+                    </div>
+                    <div class="card-back">
+                        <p id="definition"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="progress" id="progress"></div>
+            <button id="startOver">Start Over</button>
+        </div>
+    </div>
+    <script src="words_data.js"></script>
+<script>
+    let currentWords = [];
+    let currentIndex = 0;
+    let knownWords = 0;
+    let startNumber, endNumber;
+
+    const startPage = document.getElementById('startPage');
+    const flashcardPage = document.getElementById('flashcardPage');
+    const startButton = document.getElementById('startButton');
+    const startOverButton = document.getElementById('startOver');
+    const flashcard = document.getElementById('flashcard');
+    const wordElement = document.getElementById('word');
+    const definitionElement = document.getElementById('definition');
+    const progressElement = document.getElementById('progress');
+
+    startButton.addEventListener('click', startFlashcards);
+    startOverButton.addEventListener('click', showStartPage);
+    flashcard.addEventListener('click', flipCard);
+
+    function startFlashcards() {
+        startNumber = parseInt(document.getElementById('startNumber').value);
+        endNumber = parseInt(document.getElementById('endNumber').value);
+
+        if (isNaN(startNumber) || isNaN(endNumber) || startNumber > endNumber) {
+            alert('Please enter valid start and end numbers.');
+            return;
+        }
+
+        currentWords = csvData.filter(item => item.number >= startNumber && item.number <= endNumber);
+        shuffleArray(currentWords);
+        currentIndex = 0;
+        knownWords = 0;
+
+        showFlashcardPage();
+        updateFlashcard();
+        saveState();
+    }
+
+    function showStartPage() {
+        startPage.style.display = 'block';
+        flashcardPage.style.display = 'none';
+        localStorage.removeItem('flashcardState');
+    }
+
+    function showFlashcardPage() {
+        startPage.style.display = 'none';
+        flashcardPage.style.display = 'block';
+    }
+
+    function updateFlashcard() {
+        if (currentIndex < currentWords.length) {
+            const currentWord = currentWords[currentIndex];
+            wordElement.textContent = currentWord.word;
+            definitionElement.textContent = currentWord.definition;
+            flashcard.classList.remove('flipped', 'swiped-left', 'swiped-right');
+            updateProgress();
+
+            setTimeout(() => {
+                const cardInner = document.querySelector('.card-inner');
+                const frontHeight = document.querySelector('.card-front').offsetHeight;
+                const backHeight = document.querySelector('.card-back').offsetHeight;
+                const maxHeight = Math.max(frontHeight, backHeight, 200); // 200px is the minimum height
+                cardInner.style.height = `${maxHeight}px`;
+            }, 0);
+        } else if (currentWords.length > 0) {
+            const unknownWords = currentWords.filter(word => !word.known);
+            if (unknownWords.length > 0) {
+                currentWords = unknownWords;
+                shuffleArray(currentWords);
+                currentIndex = 0;
+                updateFlashcard();
+            } else {
+                alert('Congratulations! You have learned all the words.');
+                showStartPage();
+            }
+        } else {
+            alert('No words available in the selected range.');
+            showStartPage();
+        }
+    }
+
+    function flipCard() {
+        flashcard.classList.toggle('flipped');
+    }
+
+
+    function showFrontOfCard() {
+        const cardFront = document.querySelector('.card-front');
+        const cardBack = document.querySelector('.card-back');
+        cardFront.style.display = 'flex';
+        cardBack.style.display = 'none';
+    }
+
+    function handleSwipe(direction) {
+        if (direction === 'left') {
+            flashcard.classList.add('swiped-left');
+        } else if (direction === 'right') {
+            flashcard.classList.add('swiped-right');
+            currentWords[currentIndex].known = true;
+            knownWords++;
+        }
+        
+        setTimeout(() => {
+            currentIndex++;
+            updateFlashcard();
+        }, 500);
+        
+        saveState();
+    }
+
+    function updateProgress() {
+        progressElement.textContent = `${knownWords}/${endNumber - startNumber + 1}`;
+    }
+
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    flashcard.addEventListener('click', flipCard);
+
+    flashcard.addEventListener('touchstart', e => {
+        touchStartX = e.changedTouches[0].screenX;
+    });
+
+    flashcard.addEventListener('touchend', e => {
+        touchEndX = e.changedTouches[0].screenX;
+        const swipeThreshold = 50;
+        if (touchEndX < touchStartX - swipeThreshold) {
+            handleSwipe('left');
+        } else if (touchEndX > touchStartX + swipeThreshold) {
+            handleSwipe('right');
+        }
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') {
+            handleSwipe('left');
+        } else if (e.key === 'ArrowRight') {
+            handleSwipe('right');
+        } else if (e.key === ' ' || e.key === 'Enter') {
+            flipCard();
+        }
+    });
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    function saveState() {
+        const state = {
+            currentWords,
+            currentIndex,
+            knownWords,
+            startNumber,
+            endNumber
+        };
+        localStorage.setItem('flashcardState', JSON.stringify(state));
+    }
+
+    function loadState() {
+        const savedState = localStorage.getItem('flashcardState');
+        if (savedState) {
+            const state = JSON.parse(savedState);
+            currentWords = state.currentWords;
+            currentIndex = state.currentIndex;
+            knownWords = state.knownWords;
+            startNumber = state.startNumber;
+            endNumber = state.endNumber;
+            showFlashcardPage();
+            updateFlashcard();
+        }
+    }
+
+    // Load saved state on page load
+    loadState();
+</script>
+</body>
+</html>
