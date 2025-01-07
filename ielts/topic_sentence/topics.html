@@ -1,0 +1,320 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IELTS Topics Word Cloud</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: #333;
+        }
+
+        #wordCloud {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            padding: 20px 10px;
+            transition: transform 0.5s ease-out;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #f5f5f5;
+            z-index: 1;
+        }
+
+        #wordCloud.hide {
+            position: fixed;
+            transform: translateY(-100vh);
+            visibility: hidden;
+        }
+
+        .topic-word {
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.3s ease, text-shadow 0.3s ease;
+            text-align: center;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.15);
+            padding: 5px;
+            letter-spacing: 0.5px;
+        }
+
+        .topic-word:hover {
+            transform: scale(1.1);
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.2);
+        }
+
+        #topBanner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 15px 25px;
+            display: none;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            height: 70px;
+        }
+
+        #topBanner.show {
+            display: flex;
+        }
+
+        #topBanner h2 {
+            flex-grow: 1;
+            text-align: center;
+            font-weight: 700;
+            color: #2c3e50;
+            font-size: 24px;
+            margin-right: 50px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        #backButton {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #666;
+            font-size: 16px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: background-color 0.3s ease;
+        }
+
+        #backButton:hover {
+            background-color: #f0f0f0;
+        }
+
+        #backButton::before {
+            content: "←";
+            font-size: 20px;
+        }
+
+        #contentArea {
+            max-width: 800px;
+            margin: 90px auto 40px;
+            padding: 0 20px;
+            opacity: 0;
+            transition: opacity 0.5s ease-in;
+            display: none;
+            position: relative;
+            z-index: 0;
+        }
+
+        #contentArea.show {
+            opacity: 1;
+            display: block;
+        }
+
+        #topicContent {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            padding: 30px;
+        }
+
+        .heading {
+            font-weight: 700;
+            font-size: 1.2em;
+            margin: 40px 0 20px 0;
+            color: #2c3e50;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e1e8ed;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .heading:first-child {
+            margin-top: 0;
+        }
+
+        .topic-sentence {
+            margin: 16px 0;
+            line-height: 1.8;
+            color: #4a4a4a;
+            padding: 12px 16px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .topic-sentence:hover {
+            transform: translateX(5px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        #wordCloud::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #wordCloud::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        #wordCloud::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 4px;
+        }
+
+        #wordCloud::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+
+        /* Add media query for smaller screens */
+        @media (max-width: 768px) {
+            #wordCloud {
+                gap: 8px;
+                padding: 15px 8px;
+            }
+            
+            .topic-word {
+                padding: 3px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            #topBanner {
+                padding: 12px 15px;
+            }
+
+            #topBanner h2 {
+                font-size: 20px;
+            }
+
+            #contentArea {
+                margin-top: 80px;
+            }
+
+            .topic-sentence {
+                padding: 10px 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="topBanner">
+        <button id="backButton">Back</button>
+        <h2></h2>
+    </div>
+    <div id="wordCloud"></div>
+    <div id="contentArea"></div>
+
+<script>
+    const topics = [
+        "Advertising", "Animal Rights", "Cities", "Crime", "Education",
+        "Environment", "Family", "Gender", "Genetic Engineering", "Global Issues",
+        "Government and Society", "Guns and Weapons", "Health", "Housing and Architecture",
+        "Language", "Money", "Personality", "Sport and Leisure", "Television, Internet, Phones",
+        "Tourism", "Traditional vs. Modern", "Transport", "Water", "Work"
+    ];
+
+    const colors = [
+        "#FF6B6B", "#4ECDC4", "#FF8A65", "#7E57C2", "#26A69A",
+        "#FF7043", "#42A5F5", "#66BB6A", "#EC407A", "#AB47BC",
+        "#FFA726", "#26C6DA", "#5C6BC0", "#29B6F6", "#FF5252",
+        "#FF4081", "#00BCD4", "#F06292", "#FF8F00", "#FF5722",
+        "#E91E63", "#2196F3", "#00BFA5", "#FB8C00"
+    ];
+
+    function getRandomSize() {
+        return Math.floor(Math.random() * (42 - 24 + 1) + 24);
+    }
+
+    function createWordCloud() {
+        const wordCloud = document.getElementById('wordCloud');
+        topics.forEach((topic, index) => {
+            const topicElement = document.createElement('a');
+            topicElement.href = '#';
+            topicElement.className = 'topic-word';
+            topicElement.textContent = topic;
+            topicElement.style.fontSize = `${getRandomSize()}px`;
+            topicElement.style.color = colors[index];
+            
+            topicElement.onclick = (e) => {
+                e.preventDefault();
+                showTopicContent(topic, index + 1);
+            };
+            
+            wordCloud.appendChild(topicElement);
+        });
+    }
+
+    async function loadCSVData(topicId) {
+        try {
+            const response = await fetch('topics.csv');
+            const data = await response.text();
+            const rows = data.split('\n').map(row => row.split(','));
+            
+            return rows.filter(row => row[0] === topicId.toString())
+                .map(row => ({
+                    isHeading: row[1] === '1',
+                    text: row[2].trim()
+                }));
+        } catch (error) {
+            console.error('Error loading CSV:', error);
+            return [];
+        }
+    }
+
+    async function showTopicContent(topic, topicId) {
+        const wordCloud = document.getElementById('wordCloud');
+        const contentArea = document.getElementById('contentArea');
+        const topBanner = document.getElementById('topBanner');
+        
+        wordCloud.classList.add('hide');
+        contentArea.innerHTML = `<div id="topicContent">Loading...</div>`;
+        topBanner.querySelector('h2').textContent = topic;
+        
+        const topicData = await loadCSVData(topicId);
+        
+        let contentHTML = '';
+        topicData.forEach(item => {
+            if (item.isHeading) {
+                contentHTML += `<div class="heading">${item.text}</div>`;
+            } else {
+                contentHTML += `<div class="topic-sentence">${item.text}</div>`;
+            }
+        });
+
+        document.getElementById('topicContent').innerHTML = contentHTML;
+        
+        setTimeout(() => {
+            contentArea.classList.add('show');
+            topBanner.classList.add('show');
+        }, 500);
+    }
+
+    document.getElementById('backButton').onclick = () => {
+        const wordCloud = document.getElementById('wordCloud');
+        const contentArea = document.getElementById('contentArea');
+        const topBanner = document.getElementById('topBanner');
+
+        contentArea.classList.remove('show');
+        wordCloud.classList.remove('hide');
+        topBanner.classList.remove('show');
+    };
+
+    createWordCloud();
+</script>
+
+
+</body></html>
