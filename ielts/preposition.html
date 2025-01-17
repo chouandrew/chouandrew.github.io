@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>IELTS Preposition Practice</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f0f2f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .preposition-box {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .question {
+            margin: 15px 0;
+            line-height: 1.6;
+        }
+        input[type="text"] {
+            width: 80px;
+            padding: 5px;
+            margin: 0 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        .buttons {
+            margin-top: 20px;
+            text-align: center;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        #submit {
+            background: #4caf50;
+            color: white;
+        }
+        #clear {
+            background: #f44336;
+            color: white;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+        .celebration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            display: none;
+        }
+        .confetti {
+            width: 10px;
+            height: 10px;
+            position: absolute;
+            background: #f00;
+            animation: fall 3s linear infinite;
+        }
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>随堂练习</h1>
+        
+        <div class="preposition-box">
+            <strong>at, by, from, in, of, to, with, between</strong>
+        </div>
+
+        <div id="questions">
+            <div class="question">1. The unemployment rate decreased <input type="text" data-answer="to"> 3.5% by the end of 2024.</div>
+            <div class="question">2. Manufacturing output peaked <input type="text" data-answer="at"> 850 units per day in March.</div>
+            <div class="question">3. The number of international students increased <input type="text" data-answer="from"> 500 to 1200.</div>
+            <div class="question">4. Energy consumption varied <input type="text" data-answer="between"> 200 and 300 kilowatts.</div>
+            <div class="question">5. The company's revenue grew steadily, <input type="text" data-answer="with"> a 15% increase each quarter.</div>
+            <div class="question">6. The proportion <input type="text" data-answer="of"> elderly residents reached 25%.</div>
+            <div class="question">7. Tourism numbers dropped significantly <input type="text" data-answer="by"> 40% in 2023.</div>
+            <div class="question">8. Internet usage remained stable <input type="text" data-answer="at"> approximately 95%.</div>
+        </div>
+
+        <div class="buttons">
+            <button id="submit">Submit</button>
+            <button id="clear">Clear</button>
+        </div>
+
+        <div id="result"></div>
+    </div>
+
+    <div class="celebration" id="celebration"></div>
+
+    <script>
+        const submit = document.getElementById('submit');
+        const clear = document.getElementById('clear');
+        const result = document.getElementById('result');
+        const celebration = document.getElementById('celebration');
+
+        submit.addEventListener('click', () => {
+            const inputs = document.querySelectorAll('input');
+            let correct = 0;
+            let feedback = '';
+
+            inputs.forEach((input, index) => {
+                const correctAnswer = input.dataset.answer;
+                const userAnswer = input.value.toLowerCase().trim();
+                
+                if (userAnswer === correctAnswer) {
+                    correct++;
+                    input.style.backgroundColor = '#e8f5e9';
+                } else {
+                    input.style.backgroundColor = '#ffebee';
+                    feedback += `Question ${index + 1}: The correct answer is "${correctAnswer}"<br>`;
+                }
+            });
+
+            const score = (correct / inputs.length) * 100;
+            result.style.display = 'block';
+            
+            if (score === 100) {
+                result.style.backgroundColor = '#e8f5e9';
+                result.innerHTML = `Perfect! You got ${score}% correct!`;
+                createConfetti();
+            } else {
+                result.style.backgroundColor = '#fff3e0';
+                result.innerHTML = `You got ${score}% correct.<br><br>${feedback}`;
+            }
+        });
+
+        clear.addEventListener('click', () => {
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.value = '';
+                input.style.backgroundColor = 'white';
+            });
+            result.style.display = 'none';
+            celebration.style.display = 'none';
+            celebration.innerHTML = '';
+        });
+
+        function createConfetti() {
+            celebration.style.display = 'block';
+            celebration.innerHTML = '';
+            
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.animationDelay = Math.random() * 3 + 's';
+                confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                celebration.appendChild(confetti);
+            }
+        }
+    </script>
+</body>
+</html>
