@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Isomorphic Synth & Transcriber</title>
+    <!-- WaveSurfer Library for Audio Visualization -->
+    <script src="https://unpkg.com/wavesurfer.js@7/dist/wavesurfer.min.js"></script>
+    
+    <style>
+        :root {
+            --bg-color: #ffedad;
+            --key-bg: #2a2a2a;
+            --key-active: #00f2ff;
+            --key-root: #ff0055; 
+            --text-color: #ccc;
+            --key-size: 54px;
+            --gap: 6px;
+            --panel-bg: #181818;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            user-select: none;
+            position: relative;
+        }
+
+        /* --- Background Canvas --- */
+        #bg-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Behind everything */
+        }
+
+        /* --- Header & Controls --- */
+        header { 
+            text-align: center; 
+            margin-top: 20px;
+            margin-bottom: 15px; 
+            z-index: 10;
+        }
+        h1 { margin: 0 0 10px 0; font-weight: 300; letter-spacing: 1px; color: #fff; font-size: 1.5rem;}
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            background: var(--panel-bg);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            align-items: center;
+            border: 1px solid #333;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        select {
+            background: #444;
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .shortcut-hint {
+            font-size: 0.7rem;
+            color: #777;
+            margin-left: 4px;
+            border: 1px solid #444;
+            padding: 1px 4px;
+            border-radius: 3px;
+        }
+
+        #sustain-light {
+            width: 8px; height: 8px; background: #444; border-radius: 50%;
+            display: inline-block; margin-left: 6px; vertical-align: middle;
+            transition: 0.1s;
+        }
+        #sustain-light.on { background: #0f0; box-shadow: 0 0 8px #0f0; }
+
+        /* --- Player Section --- */
+        #player-container {
+            width: 90%;
+            max-width: 800px;
+            background: var(--panel-bg);
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 10px 20px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 10;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .player-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+        }
+
+        input[type="file"] {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        #waveform {
+            width: 100%;
+            height: 60px;
+        }
+
+        /* --- Computer Keyboard Grid --- */
+        .keyboard-container {
+            display: flex;
+            flex-direction: column;
+            gap: var(--gap);
+            margin-bottom: 50px;
+            z-index: 10;
+            position: relative;
+        }
+
+        .row {
+            display: flex;
+            gap: var(--gap);
+        }
+
+        /* Physical Staggering Simulation */
+        .row-1 { margin-left: 0px; }
+        .row-2 { margin-left: 25px; } 
+        .row-3 { margin-left: 45px; } 
+        .row-4 { margin-left: 70px; } 
+
+        .key {
+            width: var(--key-size);
+            height: var(--key-size);
+            background-color: var(--key-bg);
+            border-radius: 6px;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.05s ease, background-color 0.05s;
+            box-shadow: 0 3px 0 #111; 
+            border-top: 1px solid #444;
+        }
+
+        .key:active, .key.active {
+            background-color: var(--key-active);
+            transform: translateY(3px);
+            box-shadow: 0 0 0 #000;
+            color: #111;
+            border-top: 1px solid var(--key-active);
+        }
+
+        .key.root-note {
+            border: 2px solid var(--key-root);
+        }
+        
+        .key.black-key-visual {
+            background-color: #1e1e1e;
+        }
+        .key.black-key-visual.active {
+            background-color: var(--key-active);
+        }
+
+        /* Labels */
+        .key-char {
+            position: absolute;
+            top: 4px;
+            left: 6px;
+            font-size: 12px;
+            font-weight: bold;
+            opacity: 0.7;
+        }
+
+        .key-note {
+            position: absolute;
+            bottom: 4px;
+            right: 6px;
+            font-size: 10px;
+            font-weight: bold;
+            opacity: 0.9;
+        }
+
+        /* --- Minimal Piano Strip --- */
+        #piano-wrapper {
+            height: 60px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            z-index: 20;
+        }
+
+        .piano-keys {
+            position: relative;
+            height: 100%;
+            display: flex;
+        }
+
+        .p-key {
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        .p-key.white {
+            width: 24px;
+            height: 100%;
+            background: #eee;
+            border-right: 1px solid #ccc;
+        }
+        .p-key.white.active { background: var(--key-active); }
+
+        .p-key.black {
+            width: 14px;
+            height: 60%;
+            background: #111;
+            position: absolute;
+            z-index: 10;
+            border-radius: 0 0 2px 2px;
+        }
+        .p-key.black.active { background: #0088aa; }
+
+        /* Overlay */
+        #overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 100; cursor: pointer;
+            backdrop-filter: blur(5px);
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="bg-canvas"></canvas>
+
+    <div id="overlay">
+        <h1 style="color:var(--key-active)">Click to Start</h1>
+    </div>
+
+    <header>
+        <h1></h1>
+        <div class="controls">
+            <div class="control-group">
+                <label>Octave:</label>
+                <select id="octave-select">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2" selected>2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                </select>
+                <span class="shortcut-hint">← / →</span>
+            </div>
+            <div class="control-group">
+                <label>Wave:</label>
+                <select id="wave-select">
+                    <option value="triangle">Triangle</option>
+                    <option value="sawtooth">Sawtooth</option>
+                    <option value="square">Square</option>
+                    <option value="sine">Sine</option>
+                </select>
+            </div>
+            <div class="control-group">
+                Shift Sustain <div id="sustain-light"></div>
+            </div>
+        </div>
+    </header>
+
+    <div id="player-container">
+        <div class="player-header">
+            <span>Transcription Player (Space to Play/Pause)</span>
+            <input type="file" id="audio-file" accept="audio/*">
+        </div>
+        <div id="waveform"></div>
+    </div>
+
+    <!-- The Computer Keyboard Grid -->
+    <div class="keyboard-container" id="grid">
+        <!-- Generated by JS -->
+    </div>
+
+    <!-- The Bottom Piano Strip -->
+    <div id="piano-wrapper">
+        <div class="piano-keys" id="piano">
+            <!-- Generated by JS -->
+        </div>
+    </div>
+
+<script>
+    // --- Configuration ---
+    
+    const keyLayout = [
+        ['Digit1', 'Digit2', 'Digit3', 'Digit4', 'Digit5', 'Digit6', 'Digit7', 'Digit8', 'Digit9', 'Digit0', 'Minus', 'Equal'],
+        ['KeyQ', 'KeyW', 'KeyE', 'KeyR', 'KeyT', 'KeyY', 'KeyU', 'KeyI', 'KeyO', 'KeyP', 'BracketLeft', 'BracketRight'],
+        ['KeyA', 'KeyS', 'KeyD', 'KeyF', 'KeyG', 'KeyH', 'KeyJ', 'KeyK', 'KeyL', 'Semicolon', 'Quote', 'Enter'],
+        ['KeyZ', 'KeyX', 'KeyC', 'KeyV', 'KeyB', 'KeyN', 'KeyM', 'Comma', 'Period', 'Slash'] 
+    ];
+
+    const keyLabels = {
+        'Digit1': '1', 'Digit2': '2', 'Digit3': '3', 'Digit4': '4', 'Digit5': '5', 'Digit6': '6', 'Digit7': '7', 'Digit8': '8', 'Digit9': '9', 'Digit0': '0', 'Minus': '-', 'Equal': '=',
+        'KeyQ': 'Q', 'KeyW': 'W', 'KeyE': 'E', 'KeyR': 'R', 'KeyT': 'T', 'KeyY': 'Y', 'KeyU': 'U', 'KeyI': 'I', 'KeyO': 'O', 'KeyP': 'P', 'BracketLeft': '[', 'BracketRight': ']',
+        'KeyA': 'A', 'KeyS': 'S', 'KeyD': 'D', 'KeyF': 'F', 'KeyG': 'G', 'KeyH': 'H', 'KeyJ': 'J', 'KeyK': 'K', 'KeyL': 'L', 'Semicolon': ';', 'Quote': '\'', 'Enter': 'Ent',
+        'KeyZ': 'Z', 'KeyX': 'X', 'KeyC': 'C', 'KeyV': 'V', 'KeyB': 'B', 'KeyN': 'N', 'KeyM': 'M', 'Comma': ',', 'Period': '.', 'Slash': '/'
+    };
+
+    const noteNames = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+    const ROW_INTERVAL = 5; // Perfect 4th
+    
+    let audioCtx;
+    let masterGain;
+    let baseOctave = 2;
+    let sustain = false;
+    
+    let activeVoices = {};
+    let sustainedVoices = {}; 
+    let keyMap = {}; 
+    let pianoMap = {}; 
+
+    // --- WaveSurfer Setup ---
+    let wavesurfer;
+
+    function initWavesurfer() {
+        wavesurfer = WaveSurfer.create({
+            container: '#waveform',
+            waveColor: '#444',
+            progressColor: '#00d2ff',
+            cursorColor: '#fff',
+            barWidth: 2,
+            barGap: 1,
+            barRadius: 2,
+            height: 60,
+        });
+
+        wavesurfer.on('finish', () => {
+            // Auto loop or stop logic could go here
+        });
+    }
+
+    document.getElementById('audio-file').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const objectUrl = URL.createObjectURL(file);
+            if(!wavesurfer) initWavesurfer();
+            wavesurfer.load(objectUrl);
+        }
+    });
+
+    // --- Visuals (Canvas Particles) ---
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    class Particle {
+        constructor(x, y, color) {
+            this.x = x;
+            this.y = y;
+            this.color = color;
+            // Random velocity
+            const angle = Math.random() * Math.PI * 2;
+            const speed = Math.random() * 3 + 1;
+            this.vx = Math.cos(angle) * speed;
+            this.vy = Math.sin(angle) * speed;
+            this.life = 1.0;
+            this.decay = Math.random() * 0.02 + 0.01;
+            this.size = Math.random() * 3 + 1;
+        }
+
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+            this.vy += 0.1; // Gravity
+            this.life -= this.decay;
+        }
+
+        draw(ctx) {
+            ctx.globalAlpha = this.life;
+            ctx.fillStyle = this.color;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.globalAlpha = 1.0;
+        }
+    }
+
+    function animateParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // Create a trail effect? Optional, but clearRect is cleaner for "tech" look
+        // ctx.fillStyle = 'rgba(10, 10, 10, 0.2)';
+        // ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Use additive blending for glowing effect
+        ctx.globalCompositeOperation = 'lighter';
+
+        for (let i = particles.length - 1; i >= 0; i--) {
+            particles[i].update();
+            particles[i].draw(ctx);
+            if (particles[i].life <= 0) {
+                particles.splice(i, 1);
+            }
+        }
+        
+        ctx.globalCompositeOperation = 'source-over';
+        requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+
+    function spawnExplosion(x, y, color) {
+        for (let i = 0; i < 15; i++) {
+            particles.push(new Particle(x, y, color));
+        }
+    }
+
+    // --- Audio System ---
+    function initAudio() {
+        if (audioCtx) return;
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        audioCtx = new AudioContext();
+        masterGain = audioCtx.createGain();
+        masterGain.gain.value = 0.15;
+        masterGain.connect(audioCtx.destination);
+        document.getElementById('overlay').style.display = 'none';
+        
+        if(!wavesurfer) initWavesurfer();
+    }
+
+    function getFrequency(midiNote) {
+        return 440 * Math.pow(2, (midiNote - 69) / 12);
+    }
+
+    function getNoteInfo(midiNote) {
+        const noteIndex = midiNote % 12;
+        const octave = Math.floor(midiNote / 12) - 1;
+        return { 
+            name: noteNames[noteIndex], 
+            octave: octave, 
+            isBlack: [1, 3, 6, 8, 10].includes(noteIndex) 
+        };
+    }
+
+    function startNote(keyId, midiNote) {
+        if (!audioCtx) initAudio();
+        if (activeVoices[keyId]) return; 
+
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        
+        osc.type = document.getElementById('wave-select').value;
+        osc.frequency.value = getFrequency(midiNote);
+        
+        const now = audioCtx.currentTime;
+        gain.gain.setValueAtTime(0, now);
+        gain.gain.linearRampToValueAtTime(1, now + 0.01);
+        gain.gain.exponentialRampToValueAtTime(0.8, now + 0.2);
+
+        osc.connect(gain);
+        gain.connect(masterGain);
+        osc.start();
+
+        activeVoices[keyId] = { osc, gain, midiNote };
+
+        // Visuals: DOM
+        const gridEl = document.getElementById(keyId);
+        if (gridEl) {
+            gridEl.classList.add('active');
+            // Visuals: Canvas Explosion
+            const rect = gridEl.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            spawnExplosion(centerX, centerY, '#00d2ff');
+        }
+        
+        if (pianoMap[midiNote]) pianoMap[midiNote].classList.add('active');
+    }
+
+    function stopNote(keyId) {
+        if (!activeVoices[keyId]) return;
+
+        const voice = activeVoices[keyId];
+        const midiNote = voice.midiNote;
+        
+        if (pianoMap[midiNote]) pianoMap[midiNote].classList.remove('active');
+
+        if (sustain) {
+            sustainedVoices[keyId] = voice;
+            delete activeVoices[keyId];
+            const el = document.getElementById(keyId);
+            if (el) el.classList.remove('active');
+            return;
+        }
+
+        killVoice(voice);
+        delete activeVoices[keyId];
+
+        const el = document.getElementById(keyId);
+        if (el) el.classList.remove('active');
+    }
+
+    function killVoice(voice) {
+        const now = audioCtx.currentTime;
+        voice.gain.gain.cancelScheduledValues(now);
+        voice.gain.gain.setValueAtTime(voice.gain.gain.value, now);
+        voice.gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+        voice.osc.stop(now + 0.11);
+    }
+
+    function releaseSustain() {
+        for (let keyId in sustainedVoices) {
+            killVoice(sustainedVoices[keyId]);
+        }
+        sustainedVoices = {};
+    }
+
+    // --- Rendering ---
+
+    function renderPiano(minMidi, maxMidi) {
+        const pianoContainer = document.getElementById('piano');
+        pianoContainer.innerHTML = '';
+        pianoMap = {};
+
+        while (minMidi % 12 !== 0) minMidi--;
+        while (maxMidi % 12 !== 0) maxMidi++;
+        maxMidi += 1; 
+
+        // White Keys
+        for (let i = minMidi; i <= maxMidi; i++) {
+            const info = getNoteInfo(i);
+            if (!info.isBlack) {
+                const key = document.createElement('div');
+                key.className = 'p-key white';
+                pianoContainer.appendChild(key);
+                pianoMap[i] = key;
+            }
+        }
+
+        // Black Keys
+        const whiteWidth = 24; 
+        const blackWidth = 14; 
+        let currentWhiteIndex = 0;
+
+        for (let i = minMidi; i <= maxMidi; i++) {
+            const info = getNoteInfo(i);
+            if (info.isBlack) {
+                const key = document.createElement('div');
+                key.className = 'p-key black';
+                const leftPos = (currentWhiteIndex * whiteWidth) - (blackWidth / 2);
+                key.style.left = leftPos + 'px';
+                pianoContainer.appendChild(key);
+                pianoMap[i] = key;
+            } else {
+                currentWhiteIndex++;
+            }
+        }
+    }
+
+    function renderGrid() {
+        const gridContainer = document.getElementById('grid');
+        gridContainer.innerHTML = '';
+        keyMap = {};
+
+        const startNote = (parseInt(baseOctave) + 1) * 12; 
+        let minNote = 999;
+        let maxNote = 0;
+
+        keyLayout.forEach((rowKeys, rowIndex) => {
+            const rowDiv = document.createElement('div');
+            rowDiv.className = `row row-${rowIndex + 1}`;
+
+            const rowInversion = 3 - rowIndex; 
+            const rowStartPitch = startNote + (rowInversion * ROW_INTERVAL);
+
+            rowKeys.forEach((code, colIndex) => {
+                const midiNote = rowStartPitch + colIndex;
+                const noteInfo = getNoteInfo(midiNote);
+                
+                if(midiNote < minNote) minNote = midiNote;
+                if(midiNote > maxNote) maxNote = midiNote;
+
+                keyMap[code] = midiNote;
+
+                const keyEl = document.createElement('div');
+                keyEl.className = 'key';
+                keyEl.id = code;
+                
+                if (noteInfo.name === 'C') keyEl.classList.add('root-note');
+                if (noteInfo.isBlack) keyEl.classList.add('black-key-visual');
+
+                const charLabel = document.createElement('div');
+                charLabel.className = 'key-char';
+                charLabel.innerText = keyLabels[code] || code;
+
+                const noteLabel = document.createElement('div');
+                noteLabel.className = 'key-note';
+                noteLabel.innerText = noteInfo.name + noteInfo.octave;
+
+                keyEl.appendChild(charLabel);
+                keyEl.appendChild(noteLabel);
+
+                keyEl.addEventListener('mousedown', (e) => {
+                    e.preventDefault();
+                    startNote(code, midiNote);
+                });
+                keyEl.addEventListener('mouseup', () => stopNote(code));
+                keyEl.addEventListener('mouseleave', () => stopNote(code));
+
+                rowDiv.appendChild(keyEl);
+            });
+            gridContainer.appendChild(rowDiv);
+        });
+
+        renderPiano(minNote, maxNote);
+    }
+
+    function changeOctave(delta) {
+        let newVal = parseInt(baseOctave) + delta;
+        if (newVal < 0) newVal = 0;
+        if (newVal > 7) newVal = 7;
+        
+        if (newVal !== parseInt(baseOctave)) {
+            baseOctave = newVal;
+            document.getElementById('octave-select').value = newVal;
+            renderGrid();
+        }
+    }
+
+    // --- Event Listeners ---
+
+    window.addEventListener('keydown', (e) => {
+        if (e.repeat) return;
+
+        // Spacebar -> Play/Pause Audio
+        if (e.code === 'Space') {
+            e.preventDefault();
+            if (wavesurfer) {
+                wavesurfer.playPause();
+            }
+            return;
+        }
+
+        // Shift -> Sustain
+        if (e.key === 'Shift') {
+            e.preventDefault();
+            sustain = true;
+            document.getElementById('sustain-light').classList.add('on');
+            return;
+        }
+
+        // Arrow Keys -> Octave
+        if (e.code === 'ArrowLeft') {
+            e.preventDefault();
+            changeOctave(-1);
+            return;
+        }
+        if (e.code === 'ArrowRight') {
+            e.preventDefault();
+            changeOctave(1);
+            return;
+        }
+
+        if (keyMap[e.code] !== undefined) {
+            startNote(e.code, keyMap[e.code]);
+        }
+    });
+
+    window.addEventListener('keyup', (e) => {
+        if (e.key === 'Shift') {
+            sustain = false;
+            document.getElementById('sustain-light').classList.remove('on');
+            releaseSustain();
+            return;
+        }
+
+        if (keyMap[e.code] !== undefined) {
+            stopNote(e.code);
+        }
+    });
+
+    window.addEventListener('blur', () => {
+        for (let keyId in activeVoices) killVoice(activeVoices[keyId]);
+        activeVoices = {};
+        releaseSustain();
+        document.querySelectorAll('.active').forEach(el => el.classList.remove('active'));
+    });
+
+    document.getElementById('octave-select').addEventListener('change', (e) => {
+        baseOctave = parseInt(e.target.value);
+        renderGrid();
+        e.target.blur(); 
+    });
+
+    document.getElementById('overlay').addEventListener('click', initAudio);
+
+    renderGrid();
+
+</script>
+</body>
+</html>
