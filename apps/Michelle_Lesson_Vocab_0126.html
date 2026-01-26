@@ -1,0 +1,757 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>极速测词</title>
+  <style>
+
+    :root{
+      --ink:#0f172a;
+      --shadow: 0 18px 50px rgba(0,0,0,.14);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-family: ui-rounded, system-ui, -apple-system, "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+      color:var(--ink);
+      padding:18px;
+      background:
+        radial-gradient(900px 650px at 15% 10%, rgba(255,42,161,.26), transparent 55%),
+        radial-gradient(900px 650px at 92% 18%, rgba(0,210,255,.22), transparent 55%),
+        radial-gradient(900px 650px at 50% 95%, rgba(0,245,160,.18), transparent 60%),
+        linear-gradient(180deg, #ffffff, #f7fbff);
+    }
+    .wrap{width:min(520px, 100%);display:flex;flex-direction:column;gap:14px;align-items:stretch}
+
+    /* ===== Guide ===== */
+    .guide{
+      border-radius:20px;
+      background: rgba(255,255,255,.78);
+      border:1px solid rgba(0,0,0,.07);
+      box-shadow: 0 12px 34px rgba(0,0,0,.10);
+      padding:12px 14px;
+      line-height:1.35;
+    }
+    .guide h3{
+      margin:0 0 8px;
+      font-size:14px;
+      font-weight:1000;
+      letter-spacing:.2px;
+      color:#27324a;
+    }
+    .guide ol{
+      margin:0;
+      padding-left:18px;
+      font-size:13px;
+      font-weight:800;
+      color: rgba(39,50,74,.86);
+    }
+    .guide li{margin:6px 0}
+    .guide .hl{color:#0f172a}
+
+    /* ===== Peek button ===== */
+    .peekRow{display:grid;grid-template-columns:1fr;margin-top:10px}
+    button.peek{
+      background: linear-gradient(135deg, rgba(15,23,42,.92), rgba(39,50,74,.84));
+      color:#fff;
+    }
+
+    /* ===== Card ===== */
+    .card{
+      position:relative;
+      border-radius:28px;
+      background: rgba(255,255,255,.82);
+      border:1px solid rgba(0,0,0,.07);
+      box-shadow: var(--shadow);
+      padding:18px 18px 22px;
+      overflow:hidden;
+      min-height:46vh;
+      backdrop-filter: blur(12px);
+    }
+    .card:before{
+      content:"";position:absolute;inset:-70px;
+      background:
+        radial-gradient(160px 160px at 18% 30%, rgba(255,42,161,.22), transparent 62%),
+        radial-gradient(190px 190px at 82% 22%, rgba(0,210,255,.22), transparent 62%),
+        radial-gradient(240px 240px at 55% 95%, rgba(0,245,160,.18), transparent 68%),
+        radial-gradient(220px 220px at 50% 55%, rgba(124,58,237,.16), transparent 70%);
+      transform: rotate(10deg);pointer-events:none;
+    }
+
+    .top{
+      position:absolute;top:12px;left:12px;right:12px;
+      display:flex;justify-content:space-between;align-items:center;gap:10px;z-index:5;
+    }
+    .counter{
+      display:inline-flex;align-items:center;
+      padding:8px 12px;border-radius:999px;
+      font-weight:1000;font-size:13px;color:#27324a;
+      background: rgba(255,255,255,.82);
+      border:1px solid rgba(0,0,0,.08);
+      box-shadow: 0 12px 26px rgba(0,0,0,.10);
+      letter-spacing:.2px;line-height:1;user-select:none;
+    }
+    .miniBtns{display:flex;gap:10px;align-items:center}
+
+    .iconBtn{
+      width:44px;height:34px;border-radius:999px;border:1px solid rgba(0,0,0,.10);
+      background: rgba(255,255,255,.82);
+      box-shadow: 0 12px 26px rgba(0,0,0,.10);
+      font-weight:1000;cursor:pointer;user-select:none;display:grid;place-items:center;padding:0;
+      transition: transform .08s ease;
+    }
+    .iconBtn:active{transform:scale(.98)}
+
+    .toggleWrap{position:relative;width:72px;height:34px}
+    .toggle{
+      width:72px;height:34px;border-radius:999px;border:1px solid rgba(0,0,0,.10);
+      background: rgba(255,255,255,.82);
+      box-shadow: 0 12px 26px rgba(0,0,0,.10);
+      display:flex;align-items:center;justify-content:space-between;padding:4px;cursor:pointer;user-select:none;
+    }
+    .toggle span{width:50%;text-align:center;font-size:12px;font-weight:1000;color: rgba(39,50,74,.70)}
+    .knob{
+      position:absolute;width:32px;height:26px;border-radius:999px;
+      background: linear-gradient(135deg, rgba(255,42,161,.90), rgba(0,210,255,.90), rgba(124,58,237,.88));
+      box-shadow: 0 10px 22px rgba(0,0,0,.18);
+      transition: transform .18s ease;
+      top:4px;left:4px;
+    }
+    .toggleWrap.zh .knob{transform: translateX(34px);}
+    .toggleWrap.en .knob{transform: translateX(0px);}
+
+    /* ===== Flip area ===== */
+    .flipCard{
+      position:absolute;
+      inset:0;
+      padding:54px 18px 34px;
+      display:grid;
+      place-items:center;
+      perspective: 1200px;
+      z-index:2;
+    }
+    .inner{
+      width:100%;
+      height:100%;
+      max-height: 52vh;
+      transform-style:preserve-3d;
+      transition: transform .62s cubic-bezier(.18,.88,.22,1);
+      will-change: transform;
+    }
+    .flipped .inner{transform: rotateY(180deg);}
+    .face{
+      position:absolute;inset:0;
+      display:flex;flex-direction:column;
+      align-items:center;justify-content:center;
+      backface-visibility:hidden;
+      padding: 18px 8px 8px;
+      text-align:center;
+    }
+    .front{}
+    .back{transform: rotateY(180deg);}
+    .word{
+      z-index:1;
+      font-weight:1000;
+      font-size: clamp(34px, 6vw, 52px);
+      letter-spacing:.2px;
+      line-height:1.1;
+      margin:0;
+      padding:8px 8px 2px;
+      word-break: break-word;
+    }
+    .sub{
+      z-index:1;
+      margin:10px 0 0;
+      font-weight:900;
+      font-size:12px;
+      color:rgba(81,97,120,.85);
+      letter-spacing:.2px;
+      user-select:none;
+    }
+
+    /* per-card timer bar */
+    .timer{
+      position:absolute;left:16px;right:16px;bottom:14px;height:10px;border-radius:999px;
+      background: rgba(0,0,0,.06);overflow:hidden;z-index:3;
+    }
+    .timer > i{
+      display:block;height:100%;width:100%;border-radius:999px;
+      background: linear-gradient(90deg, rgba(255,42,161,.95), rgba(0,210,255,.95), rgba(0,245,160,.95), rgba(124,58,237,.92));
+      transform-origin:left center;transform: scaleX(1);
+    }
+
+    /* buttons */
+    .btnRow{display:grid;grid-template-columns: 1fr 1fr;gap:12px}
+    button.big{
+      border:0;border-radius:18px;padding:16px 14px;font-weight:1000;font-size:16px;
+      cursor:pointer;user-select:none;box-shadow: 0 14px 34px rgba(0,0,0,.12);
+      transition: transform .08s ease, filter .2s ease;touch-action: manipulation;
+    }
+    button.big:active{transform:scale(.98)}
+    .know{background: linear-gradient(135deg, rgba(0,200,83,.95), rgba(0,245,160,.78));color:#fff;}
+    .dont{background: linear-gradient(135deg, rgba(255,23,68,.95), rgba(255,42,161,.78));color:#fff;}
+
+    .progressWrap{
+      height:12px;border-radius:999px;background: rgba(0,0,0,.06);overflow:hidden;border:1px solid rgba(0,0,0,.06);
+    }
+    .progress{
+      height:100%;width:0%;border-radius:999px;
+      background: linear-gradient(90deg, rgba(255,42,161,.92), rgba(0,210,255,.92), rgba(0,245,160,.92), rgba(124,58,237,.92));
+      transition: width .25s ease;
+    }
+
+    .overlay{
+      position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:18px;
+      background: rgba(15,23,42,.38);backdrop-filter: blur(10px);z-index:50;
+    }
+    .overlay.show{display:flex}
+    .modal{
+      width:min(520px, 100%);border-radius:28px;background: rgba(255,255,255,.92);
+      border:1px solid rgba(0,0,0,.08);box-shadow: 0 22px 65px rgba(0,0,0,.20);
+      padding:16px;text-align:center;
+    }
+    .modal h2{margin:6px 0 4px;font-size:22px;font-weight:1000;letter-spacing:.2px}
+    .miniStat{display:flex;justify-content:center;gap:10px;margin:10px 0 14px;flex-wrap:wrap}
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border-radius:999px;
+      font-weight:1000;font-size:13px;background: rgba(255,255,255,.86);border:1px solid rgba(0,0,0,.08);
+      color:#27324a;line-height:1;
+    }
+    .modal .btns{display:flex;gap:10px;justify-content:center}
+    .ghost{background: rgba(255,255,255,.80);color:#0f172a;border:1px solid rgba(0,0,0,.10)}
+
+    @media (max-width: 420px){
+      body{padding:14px}
+      .card{min-height:50vh}
+      button.big{padding:16px 10px}
+    }
+  
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="guide" aria-label="说明">
+      <h3>课堂词汇极速测试（按数字清零结束）</h3>
+      <ol>
+        <li>每个单词有 <span class="hl">8 秒</span> 时间：Michelle 一定要看到中文想起英文，并大声读出来。</li>
+        <li>如果读出来了点击 <span class="hl">认识</span>，左上角数字会少一个。</li>
+        <li>如果没有想起来或超时了，<span class="hl">不要点认识</span>，左上角数字不会变化。</li>
+        <li>右上方可以 <span class="hl">重置</span> 或 <span class="hl">中英文切换</span>。</li>
+      </ol>
+    </div>
+    <div class="card" id="card" aria-label="card">
+      <div class="top">
+        <div class="counter" id="counter">0/0</div>
+        <div class="miniBtns">
+          <div class="toggleWrap en" id="langWrap" aria-label="lang toggle">
+            <div class="toggle" id="langToggle">
+              <span>EN</span><span>中</span>
+            </div>
+            <div class="knob" aria-hidden="true"></div>
+          </div>
+          <button class="iconBtn" id="resetBtn" title="重置">↻</button>
+        </div>
+      </div>
+
+      <div class="flipCard" id="flip">
+        <div class="inner" id="inner">
+          <div class="face front">
+            <h1 class="word" id="frontWord">—</h1>
+            <div class="sub" id="sub">⏱️ 8s</div>
+          </div>
+          <div class="face back">
+            <h1 class="word" id="backWord">—</h1>
+            <div class="sub">👀</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="timer" aria-hidden="true"><i id="timerBar"></i></div>
+    </div>
+
+    <div class="btnRow">
+      <button class="big know" id="btnKnow">认识</button>
+      <button class="big dont" id="btnDont">不认识</button>
+    </div>
+
+    <div class="peekRow">
+      <button class="big peek" id="btnPeek">空格翻转</button>
+    </div>
+
+    <div class="progressWrap" aria-label="progress">
+      <div class="progress" id="progress"></div>
+    </div>
+  </div>
+
+  <div class="overlay" id="overlay" role="dialog" aria-modal="true">
+    <div class="modal">
+      <div style="font-size:40px">🎉</div>
+      <h2>Done</h2>
+      <div class="miniStat">
+        <div class="pill">✅ <span id="doneKnow">0</span></div>
+        <div class="pill">⏳ <span id="doneRetry">0</span></div>
+      </div>
+      <div class="btns">
+        <button class="big know" id="restart">再来</button>
+        <button class="big ghost" id="clear">清空</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+
+(() => {
+  const VOCAB = [
+    {en:"blind", zh:"看不见的"},
+    {en:"incredible", zh:"难以置信的"},
+    {en:"inspire", zh:"启发"},
+    {en:"operation", zh:"手术"},
+    {en:"respect", zh:"尊敬"},
+    {en:"talent", zh:"天赋"},
+    {en:"nature", zh:"自然"},
+    {en:"stand", zh:"站立"},
+    {en:"disease", zh:"疾病"},
+    {en:"cell", zh:"细胞"},
+    {en:"cancer", zh:"癌症"},
+    {en:"remove", zh:"移除"},
+    {en:"develop", zh:"发展；开发"},
+    {en:"bounce", zh:"弹跳"},
+    {en:"bat", zh:"蝙蝠"},
+    {en:"in the dark", zh:"在黑暗中"},
+    {en:"admire", zh:"钦佩"},
+    {en:"funeral", zh:"葬礼"},
+    {en:"ordinary", zh:"平凡的"},
+    {en:"It looks like ...", zh:"看起来……"},
+    {en:"block", zh:"阻挡"},
+    {en:"cloudy", zh:"多云的"},
+    {en:"yesterday", zh:"昨天"},
+    {en:"remote controller", zh:"遥控器"},
+    {en:"remote", zh:"遥远的"},
+    {en:"control", zh:"控制"},
+    {en:"impolite", zh:"不礼貌的"},
+    {en:"rude", zh:"粗鲁的"},
+    {en:"miserable", zh:"难过的"},
+    {en:"cheerful", zh:"开心的"},
+    {en:"careless", zh:"不仔细的"},
+    {en:"confident", zh:"自信的"},
+    {en:"serious", zh:"严肃的"},
+    {en:"mysterious", zh:"神秘的"},
+    {en:"independent", zh:"独立的"},
+    {en:"main", zh:"主要的"},
+    {en:"interest", zh:"兴趣"},
+    {en:"car racing", zh:"赛车"},
+    {en:"take part in", zh:"参加"},
+    {en:"join", zh:"参加；加入"},
+    {en:"design", zh:"设计"},
+    {en:"designer", zh:"设计师"},
+    {en:"professional", zh:"专业的"},
+    {en:"code", zh:"代码"},
+    {en:"coder", zh:"程序员"},
+    {en:"patient", zh:"耐心的；病人"},
+    {en:"be into", zh:"对……感兴趣"},
+    {en:"various", zh:"不同的；各种各样的"},
+    {en:"typical", zh:"典型的"},
+    {en:"hockey", zh:"曲棍球"},
+    {en:"make progress", zh:"有进步"},
+    {en:"kayak", zh:"皮划艇"},
+    {en:"opposite", zh:"在对面；相反的"},
+    {en:"drama", zh:"戏剧"},
+    {en:"thriller", zh:"惊悚片"},
+    {en:"science fiction", zh:"科幻"},
+    {en:"mind", zh:"介意"},
+    {en:"studio", zh:"工作室"},
+    {en:"relate to", zh:"与……相关"},
+    {en:"connect", zh:"连接"},
+    {en:"look forward to doing", zh:"期待做……"},
+    {en:"skill", zh:"技能"},
+    {en:"relative", zh:"亲戚"},
+    {en:"personality", zh:"性格"},
+    {en:"light brown", zh:"浅棕色"},
+    {en:"navy blue", zh:"海蓝色"},
+    {en:"stockings", zh:"长袜"},
+    {en:"formal", zh:"正式的"},
+    {en:"casual", zh:"随意的"},
+    {en:"blazer", zh:"薄夹克"},
+    {en:"smartwatch", zh:"智能手表"},
+    {en:"wrist", zh:"手腕"},
+    {en:"appearance", zh:"外表"},
+    {en:"hoodies", zh:"套头卫衣"},
+    {en:"sweatshirt", zh:"卫衣"},
+    {en:"tight", zh:"紧的"},
+    {en:"loose", zh:"松的"},
+    {en:"loose-fitting", zh:"穿起来松的"},
+    {en:"jog", zh:"慢跑"},
+    {en:"denim jacket", zh:"牛仔夹克"},
+    {en:"skin", zh:"皮肤"},
+    {en:"skinny", zh:"瘦的"},
+    {en:"necklace", zh:"项链"},
+    {en:"trendy", zh:"时髦的；时尚的"},
+    {en:"walk along", zh:"沿着……走"},
+    {en:"as well", zh:"也"},
+    {en:"brand new", zh:"全新的"},
+    {en:"blouse", zh:"女士上衣"},
+    {en:"sleeves", zh:"袖子"},
+    {en:"track suits", zh:"运动装"},
+    {en:"plain", zh:"平凡的"},
+    {en:"straight away", zh:"马上"},
+    {en:"take a break", zh:"暂时休息"},
+    {en:"secondhand", zh:"二手的"},
+    {en:"bright", zh:"明亮的"},
+    {en:"celebrity", zh:"名人"},
+    {en:"trend", zh:"趋势"},
+    {en:"in the media", zh:"在媒体上"},
+    {en:"follow", zh:"跟随，关注"},
+    {en:"star", zh:"星星，明星"},
+    {en:"pass away", zh:"去世"},
+    {en:"traffic", zh:"交通"},
+    {en:"gravity", zh:"重力"},
+    {en:"force", zh:"力"},
+    {en:"arctic", zh:"北极的"},
+    {en:"traditional", zh:"传统的"},
+    {en:"occasion", zh:"场合"},
+    {en:"The United Kingdom", zh:"英国"},
+    {en:"costume", zh:"服装"},
+    {en:"custom", zh:"习俗"},
+    {en:"folk", zh:"民间的，民俗的"},
+    {en:"popular", zh:"流行的"},
+    {en:"item", zh:"东西"},
+    {en:"version", zh:"版本"},
+    {en:"fabric", zh:"布料"},
+    {en:"vertical", zh:"垂直的"},
+    {en:"horizontal", zh:"水平的"},
+    {en:"shoulders", zh:"肩膀"},
+    {en:"unusual", zh:"不寻常的"},
+    {en:"old-fashioned", zh:"过时的"},
+    {en:"event", zh:"事件，活动"},
+    {en:"ribbon", zh:"带子；彩带"},
+    {en:"spectacular", zh:"精彩的"},
+    {en:"step", zh:"步骤，步伐"},
+    {en:"glove", zh:"手套"},
+    {en:"snacks", zh:"零食"},
+    {en:"bowl", zh:"碗"},
+    {en:"video", zh:"视频"},
+    {en:"degree", zh:"学位"},
+    {en:"retire", zh:"退休"},
+    {en:"vote", zh:"投票"},
+    {en:"in order to", zh:"为了"},
+    {en:"In order to get up early, I need to go to bed early.", zh:"为了早起，我需要早睡。"},
+    {en:"forever", zh:"永远"},
+    {en:"text", zh:"发信息"},
+    {en:"device", zh:"设备"},
+    {en:"tiny", zh:"很小的"},
+    {en:"positive", zh:"正面的"},
+    {en:"active", zh:"活跃的"},
+    {en:"road", zh:"道路"},
+    {en:"essential", zh:"尤其重要的"},
+    {en:"entertainment", zh:"娱乐"},
+    {en:"worst", zh:"最坏的"},
+    {en:"awful", zh:"糟糕的"},
+    {en:"bully", zh:"霸凌"},
+    {en:"as well as", zh:"和，也"},
+    {en:"Spanish", zh:"西班牙语"},
+    {en:"trumpet", zh:"小号"},
+    {en:"yoga", zh:"瑜伽"},
+    {en:"exhausted", zh:"精疲力尽的"},
+    {en:"recognize", zh:"认出，承认"},
+    {en:"resemble", zh:"像"},
+    {en:"Economics", zh:"经济学"},
+    {en:"effort", zh:"努力"},
+    {en:"realize", zh:"意识到"},
+    {en:"lyrics", zh:"歌词"},
+    {en:"classical music", zh:"古典音乐"},
+    {en:"weather", zh:"天气"},
+    {en:"subject", zh:"主题"},
+    {en:"captain", zh:"队长"},
+    {en:"congratulations", zh:"祝贺"},
+    {en:"loads of", zh:"很多的（口语）"},
+    {en:"guess", zh:"猜"},
+    {en:"imagine", zh:"想象"},
+    {en:"plan", zh:"计划"},
+    {en:"reply", zh:"回复"},
+    {en:"spacious", zh:"宽敞的"}
+];
+
+  const TIME_LIMIT_MS = 8000;
+
+  // v3：改成“队列”逻辑：不认识 => 看答案 + 放回队尾（未学习数不变）
+  const LS_KEY = "quick_vocab_test_v3";
+
+  const load = () => { try{ return JSON.parse(localStorage.getItem(LS_KEY) || "null"); } catch(e){ return null; } };
+  const save = (s) => localStorage.setItem(LS_KEY, JSON.stringify(s));
+
+  const total = VOCAB.length;
+  const defaultState = {
+    queue: [],
+    known: {},      // {idx:1}
+    lang: "EN",     // EN | ZH  (front language)
+  };
+  const state = Object.assign({}, defaultState, load() || {});
+
+  const shuffleIdx = () => {
+    const arr = [...Array(total).keys()];
+    for(let i=arr.length-1;i>0;i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [arr[i],arr[j]] = [arr[j],arr[i]];
+    }
+    return arr;
+  };
+
+  const newRound = () => {
+    state.queue = shuffleIdx();
+    state.known = {};
+    save(state);
+  };
+
+  const ensureQueue = () => {
+    const valid = Array.isArray(state.queue) && state.queue.length > 0;
+    if(!valid) newRound();
+  };
+  ensureQueue();
+
+  const $ = (id) => document.getElementById(id);
+  const counterEl = $("counter");
+  const progressEl = $("progress");
+  const timerBar = $("timerBar");
+  const subEl = $("sub");
+
+  const frontWord = $("frontWord");
+  const backWord = $("backWord");
+  const flip = $("flip");
+  const inner = $("inner");
+
+  const btnKnow = $("btnKnow");
+  const btnDont = $("btnDont");
+  const btnPeek = $("btnPeek");
+
+  const overlay = $("overlay");
+  const doneKnow = $("doneKnow");
+  const doneRetry = $("doneRetry");
+  const restartBtn = $("restart");
+  const clearBtn = $("clear");
+
+  const langWrap = $("langWrap");
+  const langToggle = $("langToggle");
+  const resetBtn = $("resetBtn");
+
+  let timer = null;
+  let lock = false;
+  let showingAnswer = false;
+
+  const queueLen = () => state.queue.length;
+  const knownCount = () => Object.keys(state.known).length;
+
+  const updateLangUI = () => {
+    langWrap.classList.toggle("en", state.lang === "EN");
+    langWrap.classList.toggle("zh", state.lang === "ZH");
+  };
+
+  const updateTop = () => {
+    // 未学习/总数 = 队列长度/总数
+    counterEl.textContent = `${queueLen()}/${total}`;
+    // 进度条 = 已认识占比
+    const pct = Math.round((knownCount()/total) * 100);
+    progressEl.style.width = `${pct}%`;
+    updateLangUI();
+  };
+
+  const startTimer = () => {
+    timerBar.style.transition = "none";
+    timerBar.style.transform = "scaleX(1)";
+    timerBar.getBoundingClientRect();
+    timerBar.style.transition = `transform ${TIME_LIMIT_MS}ms linear`;
+    timerBar.style.transform = "scaleX(0)";
+
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      if(lock || showingAnswer) return;
+      handleDont(true); // timeout => 不认识
+    }, TIME_LIMIT_MS);
+  };
+
+  const currentIdx = () => state.queue[0];
+  const currentItem = () => VOCAB[currentIdx()];
+
+  const setFaces = () => {
+    const item = currentItem();
+    const front = (state.lang === "EN") ? item.en : item.zh;
+    const back  = (state.lang === "EN") ? item.zh : item.en;
+    frontWord.textContent = front;
+    backWord.textContent = back;
+  };
+
+  const setFlipped = (yes) => {
+    flip.classList.toggle("flipped", !!yes);
+  };
+
+  let peekTimer = null;
+
+  const tempFlip = (ms = 1000) => {
+    // 临时翻转“偷看”答案，不改变队列、不改变数字
+    if(overlay.classList.contains("show")) return;
+    if(showingAnswer || lock) return;
+
+    clearTimeout(peekTimer);
+    setFlipped(true);
+
+    peekTimer = setTimeout(() => {
+      if(!showingAnswer) setFlipped(false);
+    }, ms);
+  };
+
+
+  const showCard = () => {
+    lock = false;
+    showingAnswer = false;
+
+    if(queueLen() === 0){
+      showDone();
+      return;
+    }
+
+    setFlipped(false);
+    setFaces();
+    subEl.textContent = "⏱️ 8s";
+    updateTop();
+    startTimer();
+  };
+
+  const showDone = () => {
+    doneKnow.textContent = knownCount();
+    doneRetry.textContent = 0;
+    overlay.classList.add("show");
+  };
+
+  const pulse = (ok) => {
+    const el = $("card");
+    el.animate(
+      [
+        { transform:"scale(1)", filter:"saturate(1)" },
+        { transform:"scale(1.01)", filter:"saturate(1.18)" },
+        { transform:"scale(1)", filter:"saturate(1)" }
+      ],
+      { duration: 220, easing:"ease-out" }
+    );
+    if(navigator.vibrate) navigator.vibrate(ok ? 18 : 28);
+  };
+
+  const handleKnow = () => {
+    if(lock || showingAnswer) return;
+    lock = true;
+    clearTimeout(timer);
+
+    const idx = currentIdx();
+    state.known[idx] = 1;
+
+    // 认识：从队列移除，不再复习
+    state.queue.shift();
+    save(state);
+
+    pulse(true);
+    subEl.textContent = "✅";
+    setTimeout(showCard, 170);
+  };
+
+  const handleDont = (isTimeout=false) => {
+    if(lock || showingAnswer) return;
+    lock = true;
+    clearTimeout(timer);
+
+    showingAnswer = true;
+    pulse(false);
+
+    // 自动翻转给答案
+    setFlipped(true);
+    subEl.textContent = isTimeout ? "⌛" : "❌";
+
+    // 不认识：看答案后，把它放到队尾（未学习数不变）
+    const idx = currentIdx();
+    setTimeout(() => {
+      // move front to back
+      state.queue.shift();
+      state.queue.push(idx);
+      save(state);
+
+      // 切回正面，进入下一张
+      setFlipped(false);
+      showingAnswer = false;
+      setTimeout(showCard, 120);
+    }, 900);
+  };
+
+  const toggleLang = () => {
+    state.lang = (state.lang === "EN") ? "ZH" : "EN";
+    save(state);
+    // 只切换显示 & 重置计时
+    showCard();
+  };
+
+  const resetRound = () => {
+    overlay.classList.remove("show");
+    newRound();
+    showCard();
+  };
+
+  const clearAll = () => {
+    localStorage.removeItem(LS_KEY);
+    location.reload();
+  };
+
+  // Events
+  btnKnow.addEventListener("click", handleKnow);
+  btnDont.addEventListener("click", () => handleDont(false));
+  btnPeek.addEventListener("click", () => tempFlip(1000));
+
+  resetBtn.addEventListener("click", resetRound);
+  restartBtn.addEventListener("click", resetRound);
+  clearBtn.addEventListener("click", clearAll);
+
+  langToggle.addEventListener("click", toggleLang);
+  langWrap.addEventListener("click", toggleLang);
+
+  // Swipe: right=认识, left=不认识
+  let startX = null;
+  const cardEl = $("card");
+  cardEl.addEventListener("touchstart", (e) => {
+    if(!e.touches || !e.touches[0]) return;
+    startX = e.touches[0].clientX;
+  }, {passive:true});
+
+  cardEl.addEventListener("touchend", (e) => {
+    if(startX === null) return;
+    const endX = (e.changedTouches && e.changedTouches[0]) ? e.changedTouches[0].clientX : startX;
+    const dx = endX - startX;
+    startX = null;
+    if(Math.abs(dx) < 55) return;
+    if(dx > 0) handleKnow(); else handleDont(false);
+  }, {passive:true});
+
+  // Keyboard: Space=翻转, J=不认识, K=认识, L=切换, R=重置
+  document.addEventListener("keydown", (e) => {
+    if(overlay.classList.contains("show")) return;
+
+    // Space：临时翻转 1 秒（避免空格导致页面滚动）
+    if(e.code === "Space") {
+      e.preventDefault();
+      tempFlip(1000);
+      return;
+    }
+
+    const k = e.key.toLowerCase();
+    if(k === "j") handleDont(false);
+    if(k === "k") handleKnow();
+    if(k === "l") toggleLang();
+    if(k === "r") resetRound();
+  });
+
+  updateTop();
+  showCard();
+})();
+
+</script>
+</body>
+</html>
